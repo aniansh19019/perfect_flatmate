@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "708718855301",
+    "project_id": "perfect-flatmates",
+    "storage_bucket": "perfect-flatmates.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:708718855301:android:fe8a1c00a6bc7c6fa515ec",
+        "android_client_info": {
+          "package_name": "com.example.perfect_flatmate"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "708718855301-m2vn9u1gko95q17ocptjfkhnvfql6u9r.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDfuQnRUiY7YQ2XVI-mgnfCv8--agTem6U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "708718855301-m2vn9u1gko95q17ocptjfkhnvfql6u9r.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "708718855301-6hpbpo3il06bu0oieckpnf9n8imgk7st.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.perfectFlatmate"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

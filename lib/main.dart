@@ -1,8 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:perfect_flatmate/pages/home.dart';
 import 'package:perfect_flatmate/pages/login.dart';
 import 'package:flutter/rendering.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
 
-void main() {
+void main() async {
+  await Firebase.initializeApp(
+  options: DefaultFirebaseOptions.currentPlatform,
+);
   runApp(const MyApp());
 }
 
@@ -14,8 +20,11 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
       // debugPaintSizeEnabled = true;
+      
+      
     return MaterialApp(
       title: 'Flutter Demo',
+      debugShowCheckedModeBanner: false,
       
       theme: ThemeData(
         tabBarTheme: TabBarTheme(
@@ -35,11 +44,12 @@ class MyApp extends StatelessWidget {
         // or simply save your changes to "hot reload" in a Flutter IDE).
         // Notice that the counter didn't reset back to zero; the application
         // is not restarted.
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.pink,
       ),
-      initialRoute: "/",
+      initialRoute: "/home",
       routes: {
-        "/" : (context) => Login(),
+        "/login" : (context) => Login(),
+        "/home":(context) => Home()
       },
     );
   }
