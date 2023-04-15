@@ -1,14 +1,14 @@
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 
-class Login extends StatefulWidget {
-  const Login({super.key});
+class Explore extends StatefulWidget {
+  const Explore({super.key});
 
   @override
-  State<Login> createState() => _LoginState();
+  State<Explore> createState() => _ExploreState();
 }
 
-class _LoginState extends State<Login> {
+class _ExploreState extends State<Explore> {
   @override
   Widget build(BuildContext context) {
     return Container();
