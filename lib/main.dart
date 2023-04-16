@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:perfect_flatmate/pages/account_setup.dart';
 import 'package:perfect_flatmate/pages/home.dart';
 import 'package:perfect_flatmate/pages/login.dart';
 import 'package:flutter/rendering.dart';
@@ -50,6 +51,7 @@ class MyApp extends StatelessWidget {
       initialRoute: "/home",
       routes: {
         "/login" : (context) => Login(),
+        "/login/account_setup" : (context) => AccountSetup(),
         "/home":(context) => Home()
       },
     );

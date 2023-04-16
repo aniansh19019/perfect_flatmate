@@ -29,7 +29,7 @@ class _LoginState extends State<Login>
         const SnackBar(content: Text('Logging In...')),
       );
       debugPrint("Login Pressed!");
-      Auth.login(emailController.text, passwordController.text, context);
+      Auth.login(emailController.text, passwordController.text, false, context);
     }
   }
 
