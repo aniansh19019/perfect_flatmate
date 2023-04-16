@@ -16,20 +16,18 @@ class FormFieldLabelWrapper extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Expanded(
-                      flex: 2,
-                      child: labelDisabled?Container():Text(label, style: CustomTheme.h2,)),
-                    SizedBox(width: 8,),
-                    Expanded(
-                      flex: 7,
-                      child: child
-                    ),
-                  ],
-                );
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(10, 5, 10, 5),
+      child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      labelDisabled?Container():Text(label, style: CustomTheme.body,),
+                      SizedBox(height: 4,),
+                      child,
+                    ],
+                  ),
+    );
   }
 }
 
