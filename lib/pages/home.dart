@@ -1,3 +1,4 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
@@ -23,12 +24,13 @@ class _HomeState extends State<Home> {
 
     if(!Auth.isUserLogin())
     {
-      Future.delayed(Duration(milliseconds: 100), () {Auth.checkLogin(context);});
-      return SafeArea(child: Scaffold(body: Center(child: CircularProgressIndicator())));
+      Future.delayed(const Duration(milliseconds: 100), () {Auth.checkLogin(context);});
+      return const SafeArea(child: Scaffold(body: Center(child: CircularProgressIndicator())));
     }
 
-    return DefaultTabController(
+    return const DefaultTabController(
       length: 4, 
+      initialIndex: 1,
     child: Scaffold(
       // appBar: AppBar(),
       bottomNavigationBar: SafeArea(
@@ -51,6 +53,7 @@ class _HomeState extends State<Home> {
         
       body: SafeArea(
         child: TabBarView(
+          physics: NeverScrollableScrollPhysics(),
           children: [
                 Likes(),
                 Explore(),
