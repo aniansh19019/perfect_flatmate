@@ -8,7 +8,7 @@ class Auth
 
   static void signUpWithGoogle()
   {
-    
+
   }
 
   static void signUpWithFacebook()
@@ -17,8 +17,30 @@ class Auth
   }
 
 
-  static void signUp(String email, String Password, context) async
+  static void signUp(String email, String password, context) async
   {
+    try
+    {
+      var response = FirebaseAuth.instance.createUserWithEmailAndPassword(email: email, password: password);
+    }
+    on FirebaseAuthException catch (e)
+    {
+      if (e.code == "email-already-in-use")
+      {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('This email already exists! Please try logging in!')),
+          );
+        return;
+      }
+      else
+      {
+        debugPrint("$e");
+        return;
+      }
+    }
+    login(email, password, true, context);
+    Navigator.of(context).pushNamed("/login/account_setup");
+    
 
   } 
 
@@ -48,7 +70,7 @@ class Auth
     checkLogin(context);
   }
 
-  static void login(String email, String password, context) async {
+  static void login(String email, String password, bool newAccount, context) async {
     debugPrint("Logging In!");
     try {
       final credential = await FirebaseAuth.instance
@@ -70,7 +92,10 @@ class Auth
         return;
       }
     }
-    checkLogin(context);
+    if(!newAccount)
+    {
+      checkLogin(context);
+    }
   }
 
   static String ? getCurrentUser()
