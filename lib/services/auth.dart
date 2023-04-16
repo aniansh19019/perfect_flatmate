@@ -8,7 +8,7 @@ class Auth
 
   static void signUpWithGoogle()
   {
-
+    
   }
 
   static void signUpWithFacebook()
