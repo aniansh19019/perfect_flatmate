@@ -21,6 +21,7 @@ import 'package:perfect_flatmate/pages/likes.dart';
 class DataModel
 {
   // static String app_version = "1.0";
+  late List<dynamic> images;
   String name;
   String email;
   String phone;
