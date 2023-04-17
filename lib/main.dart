@@ -30,12 +30,22 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       
       theme: ThemeData(
+        elevatedButtonTheme: ElevatedButtonThemeData(
+          style: ButtonStyle(
+            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+      RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(30.0),
+      ),
+    ),
+          )
+        ),
         tabBarTheme: TabBarTheme(
+          splashFactory: NoSplash.splashFactory,
           indicator: BoxDecoration(
             shape: BoxShape.circle,
             color: Colors.grey[300]
           ),
-          labelColor: Colors.pink,
+          labelColor: Color(0xFFF65E7E),
           unselectedLabelColor: Colors.grey,
         ),
         // This is the theme of your application.

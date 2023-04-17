@@ -26,25 +26,31 @@ class DataHelper
     return "";
   }
 
-  static Future<dynamic> getUserDataFromEmail(String email)async
+  static Future<QuerySnapshot?> getUserDataFromField(String field, String value) async
   {
     QuerySnapshot<Map<String, dynamic>> docs;
 
     try
     {
-      docs = await FirebaseFirestore.instance.collection('users').where("email", isEqualTo: email).get();
+      docs = await FirebaseFirestore.instance.collection('users').where(field, isEqualTo: value).get();
     }
     catch(error)
     {
       debugPrint(error.toString());
-      return "Error getting user data from email!";
+      // return "Error getting user data from $field!";
+      return null;
     }
 
     if(docs.size == 0)
     {
       return null;
     }
-    return docs.docs[0];
+    return docs;
+  }
+
+  static Future<dynamic> getUserDataFromEmail(String email)async
+  {
+    return await getUserDataFromField('email', email);
   }
 
   static Future<dynamic> getListings()async
