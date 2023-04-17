@@ -4,8 +4,9 @@ import 'package:perfect_flatmate/widgets/forms.dart';
 import 'package:flutter/material.dart';
 import 'package:perfect_flatmate/util/route_args.dart';
 import 'package:perfect_flatmate/util/theme.dart';
-import 'package:image_picker/image_picker.dart';
+//import 'package:image_picker/image_picker.dart';
 import '../services/auth.dart';
+
 //import 'package:firebase_picture_uploader/firebase_picture_uploader.dart';
 class AccountSetup extends StatefulWidget {
   const AccountSetup({super.key});
@@ -30,10 +31,11 @@ class _AccountSetupState extends State<AccountSetup> {
       Auth.signUp(emailController.text, passwordController.text, context);
     }
   }
+
   void _selectImage() async {
-    final pickedFile =
+    /*final pickedFile =
         await ImagePicker().pickImage(source: ImageSource.gallery);
-    /*setState(() {
+    setState(() {
       _imageFile = File(pickedFile.path);
     });
     */
@@ -97,13 +99,13 @@ class _AccountSetupState extends State<AccountSetup> {
                       textEditingController: ageController,
                       onSubmit: onSetupFormSubmit,
                     ),
-                    Container(
+                    /*Container(
                       width: double.infinity,
                       child: ElevatedButton(
                         onPressed: _selectImage,
                         child: Text('Upload Image'),
                       ),
-                    ),
+                    ),*/
                     Text(
                       // loginErrorMessage,
                       "",

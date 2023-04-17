@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:perfect_flatmate/pages/account_setup.dart';
 import 'package:perfect_flatmate/pages/home.dart';
+import 'package:perfect_flatmate/pages/loading.dart';
 import 'package:perfect_flatmate/pages/login.dart';
 import 'package:flutter/rendering.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -48,8 +49,9 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.pink,
       ),
-      initialRoute: "/home",
+      initialRoute: "/",
       routes: {
+        "/" :(context) => Loading(),
         "/login" : (context) => Login(),
         "/login/account_setup" : (context) => AccountSetup(),
         "/home":(context) => Home()

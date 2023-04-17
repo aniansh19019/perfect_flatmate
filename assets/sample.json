@@ -1,0 +1,32 @@
+{
+    "images" : ["gs://perfect-flatmates.appspot.com/avatar-gen7d3bc4ad631add594fb322c748221aa5.jpg"],
+    "name" : "Gregory House",
+    "email" : "abc@xyz.com",
+    "phone" : "1234567890",
+    "dob" : "",
+    "state" : "Karnataka",
+    "city" : "Bangalore",
+    "has_place" : false,
+    "smoking" : false,
+    "alcohol" : true,
+    "pets" : false,
+    "introvert" : false,
+    "diet" : "non_veg",
+    "about" : "Software Dev looking for a chill roommate.",
+    "gender" : "male",
+    "employment" : "employed",
+    "likes" : [],
+    "matches" : [],
+    "preferences" : 
+    {
+        "state" : "Karnataka",
+        "city" : "Bangalore",
+        "has_place" : true,
+        "smoking" : false,
+        "alcohol" : true,
+        "pets" : false,
+        "introvert" : true,
+        "diet" : "non_veg"
+    }
+
+}

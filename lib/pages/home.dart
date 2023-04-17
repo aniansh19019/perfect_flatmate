@@ -1,3 +1,4 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
@@ -16,50 +17,45 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-
-
   @override
   Widget build(BuildContext context) {
+    // if(!Auth.isUserLogin())
+    // {
+    //   Future.delayed(const Duration(milliseconds: 100), () {Auth.checkLogin(context);});
+    //   return const SafeArea(child: Scaffold(body: Center(child: CircularProgressIndicator())));
+    // }
 
-    if(!Auth.isUserLogin())
-    {
-      Future.delayed(Duration(milliseconds: 100), () {Auth.checkLogin(context);});
-      return SafeArea(child: Scaffold(body: Center(child: CircularProgressIndicator())));
-    }
-
-    return DefaultTabController(
-      length: 4, 
-    child: Scaffold(
-      // appBar: AppBar(),
-      bottomNavigationBar: SafeArea(
-        child: TabBar(
-          tabs: [
-            Tab(
-              // text: "Car",
-              icon: Icon(Icons.heart_broken_outlined)),
-            Tab(
-              // text: "Transit",
-              icon: Icon(Icons.search)),
+    return const DefaultTabController(
+        length: 4,
+        initialIndex: 1,
+        child: Scaffold(
+          // appBar: AppBar(),
+          bottomNavigationBar: SafeArea(
+            child: TabBar(tabs: [
               Tab(
-              // text: "Transit",
-              icon: Icon(Icons.chat_bubble_outline_rounded)),
-            Tab(
-              // text: "Bike",
-              icon: Icon(Icons.bike_scooter)),
-          ]),
-      ),
-        
-      body: SafeArea(
-        child: TabBarView(
-          children: [
-                Likes(),
-                Explore(),
-                Matches(),
-                Settings(),]
-        ),
-      ),
-      
-    )
-    );
+                  // text: "Car",
+                  icon: Icon(Icons.heart_broken_outlined)),
+              Tab(
+                  // text: "Transit",
+                  icon: Icon(Icons.search)),
+              Tab(
+                  // text: "Transit",
+                  icon: Icon(Icons.chat_bubble_outline_rounded)),
+              Tab(
+                  // text: "Bike",
+                  icon: Icon(Icons.bike_scooter)),
+            ]),
+          ),
+
+          body: SafeArea(
+            child:
+                TabBarView(physics: NeverScrollableScrollPhysics(), children: [
+              Likes(),
+              Explore(),
+              Matches(),
+              Settings(),
+            ]),
+          ),
+        ));
   }
 }
