@@ -16,7 +16,7 @@ class _ExploreState extends State<Explore> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: MyHomePage(title: "Yolo",)
+      child: SwipeView()
     );
   }
 }
