@@ -47,10 +47,14 @@ class DataHelper
     return docs.docs[0];
   }
 
+  static Future<dynamic> getListings()async
+  {
+    
+  }
 
   static Future<dynamic> submitLike(String email)async
   {
-    
+
   }
 
 
