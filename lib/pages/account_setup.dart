@@ -238,6 +238,7 @@ class _AdditionalDetailsPageState extends State<AdditionalDetailsPage> {
     additionalDetails['diet'] = diet;
     additionalDetails['gender'] = gender;
     additionalDetails['employment'] = employment;
+    additionalDetails['about'] = about;
     print(additionalDetails);
     Navigator.of(context).pop(additionalDetails);
   }

@@ -56,10 +56,21 @@ class DataHelper
     return await getUserDataFromField('email', email);
   }
 
-  static Future<List<SwipeItem>> getListings()async
+  static Future<List<SwipeItem>?> getListings()async
   {
-    var queryRef = await DataHelper.getUserDataFromField("city", "Mumbai");
-    var swipeItems = SwipeItemBuilder.userListToSwipeItems(queryRef!.docs);
+    QuerySnapshot<Map<String, dynamic>> docs;
+
+    try
+    {
+      docs = await FirebaseFirestore.instance.collection('users').get();
+    }
+    catch(error)
+    {
+      debugPrint(error.toString());
+      // return "Error getting user data from $field!";
+      return null;
+    }
+    var swipeItems = SwipeItemBuilder.userListToSwipeItems(docs.docs);
     return swipeItems;
   }
 
