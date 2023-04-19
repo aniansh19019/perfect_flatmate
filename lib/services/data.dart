@@ -343,4 +343,29 @@ class DataHelper {
     }
   }
 
+
+  static updateUserProfile(Map<String, dynamic> map) async {
+    var selfRecord =
+        (await getUserDataFromEmail(Auth.getCurrentUser()!))?.docs[0];
+    if (selfRecord == null) {
+      debugPrint("Error getting self Record!");
+      return;
+    }
+    var selfDocId = selfRecord!.reference.id;
+    try {
+      for (var entry in map.entries) {
+        await FirebaseFirestore.instance
+          .collection('users')
+          .doc(selfDocId)
+          .update({entry.key : entry.value});
+        }
+      
+    } catch (error) {
+      debugPrint(error.toString());
+      return "Error updating preferences";
+    }
+  }
+
+
+
 }
