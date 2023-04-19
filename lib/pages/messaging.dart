@@ -4,7 +4,8 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:perfect_flatmate/services/chats.dart';
 
 class Messaging extends StatefulWidget {
-  const Messaging({super.key});
+  final String otherEmail;
+  const Messaging({super.key, required this.otherEmail, required});
 
   @override
   State<Messaging> createState() => _MessagingState();
@@ -12,6 +13,7 @@ class Messaging extends StatefulWidget {
 
 class _MessagingState extends State<Messaging> {
   final TextEditingController _textEditingController = TextEditingController();
+  // widget.otherEmail
   final List<String> _messages = [
     'Hello!',
     'Hi there!',
@@ -36,7 +38,7 @@ class _MessagingState extends State<Messaging> {
     return Container(
         child: Scaffold(
       appBar: AppBar(
-        title: const Text("Chat"),
+        title: Text(widget.otherEmail ?? "No parameter passed"),
       ),
       body: Column(
         children: [
