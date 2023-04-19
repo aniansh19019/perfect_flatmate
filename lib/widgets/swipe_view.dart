@@ -117,6 +117,7 @@ class _SwipeViewState extends State<SwipeView>
           }
           else if(snapshot.hasError)
           {
+            debugPrint(snapshot.error.toString());
             return Center(child:Text("Error"));
           }
           else
