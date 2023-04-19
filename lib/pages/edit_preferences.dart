@@ -22,8 +22,8 @@ class _EditPreferencesState extends State<EditPreferences> {
   TextEditingController _cityController = TextEditingController();
   TextEditingController _stateController = TextEditingController();
 
-  dynamic preferences = DataHelper.getUserDataFromField(
-          'preferences', Auth.getCurrentUser()!);
+  dynamic preferences =
+      DataHelper.getUserDataFromField('preferences', Auth.getCurrentUser()!);
   @override
   void dispose() {
     _cityController.dispose();
@@ -117,11 +117,156 @@ class _EditPreferencesState extends State<EditPreferences> {
                             });
                           },
                         ),
+                        ChoiceChip(
+                          label: Text('No'),
+                          selected: has_place == false,
+                          onSelected: (bool selected) {
+                            setState(() {
+                              has_place = !selected;
+                            });
+                          },
+                        ),
                       ],
                     ),
                     SizedBox(height: 16.0),
                     Text(
-                      'Pet Preferences:',
+                      'Gender Preference:',
+                      style: TextStyle(
+                        fontSize: 16.0,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    SizedBox(height: 8.0),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        ChoiceChip(
+                          label: Text('Male'),
+                          selected: gender == 'male',
+                          onSelected: (bool selected) {
+                            setState(() {
+                              gender = 'male';
+                            });
+                          },
+                        ),
+                        ChoiceChip(
+                          label: Text('Female'),
+                          selected: gender == 'female',
+                          onSelected: (bool selected) {
+                            setState(() {
+                              gender = 'female';
+                            });
+                          },
+                        ),
+                        ChoiceChip(
+                          label: Text('Everyone'),
+                          selected: gender == 'everyone',
+                          onSelected: (bool selected) {
+                            setState(() {
+                              gender = 'everyone';
+                            });
+                          },
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 16.0),
+                    Text(
+                      'Personality Preference:',
+                      style: TextStyle(
+                        fontSize: 16.0,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    SizedBox(height: 8.0),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        ChoiceChip(
+                          label: Text('Extrovert'),
+                          selected: personality_type == 'extrovert',
+                          onSelected: (bool selected) {
+                            setState(() {
+                              personality_type = 'extrovert';
+                            });
+                          },
+                        ),
+                        ChoiceChip(
+                          label: Text('Introvert'),
+                          selected: personality_type == 'introvert',
+                          onSelected: (bool selected) {
+                            setState(() {
+                              personality_type = 'introvert';
+                            });
+                          },
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 16.0),
+                    Text(
+                      'Smoking Allowed:',
+                      style: TextStyle(
+                        fontSize: 16.0,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    SizedBox(height: 8.0),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        ChoiceChip(
+                          label: Text('Yes'),
+                          selected: smoking == true,
+                          onSelected: (bool selected) {
+                            setState(() {
+                              smoking = selected;
+                            });
+                          },
+                        ),
+                        ChoiceChip(
+                          label: Text('No'),
+                          selected: smoking == false,
+                          onSelected: (bool selected) {
+                            setState(() {
+                              smoking = !selected;
+                            });
+                          },
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 16.0),
+                    Text(
+                      'Drinking Preferences:',
+                      style: TextStyle(
+                        fontSize: 16.0,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    SizedBox(height: 8.0),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        ChoiceChip(
+                          label: Text('Yes'),
+                          selected: alcohol == true,
+                          onSelected: (bool selected) {
+                            setState(() {
+                              alcohol = selected;
+                            });
+                          },
+                        ),
+                        ChoiceChip(
+                          label: Text('No'),
+                          selected: alcohol == false,
+                          onSelected: (bool selected) {
+                            setState(() {
+                              alcohol = !selected;
+                            });
+                          },
+                        ),
+                      ],
+                    ),
+                    Text(
+                      'Pets Preferences:',
                       style: TextStyle(
                         fontSize: 16.0,
                         fontWeight: FontWeight.bold,
@@ -152,26 +297,106 @@ class _EditPreferencesState extends State<EditPreferences> {
                       ],
                     ),
                     SizedBox(height: 16.0),
+                    Text(
+                      'Employment Preference:',
+                      style: TextStyle(
+                        fontSize: 16.0,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    SizedBox(height: 8.0),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        ChoiceChip(
+                          label: Text('Student'),
+                          selected: employment == 'student',
+                          onSelected: (bool selected) {
+                            setState(() {
+                              employment = 'student';
+                            });
+                          },
+                        ),
+                        ChoiceChip(
+                          label: Text('Employed'),
+                          selected: employment == 'employed',
+                          onSelected: (bool selected) {
+                            setState(() {
+                              employment = 'employed';
+                            });
+                          },
+                        ),
+                        ChoiceChip(
+                          label: Text('Unemployed'),
+                          selected: employment == 'unemployed',
+                          onSelected: (bool selected) {
+                            setState(() {
+                              employment = 'unemployed';
+                            });
+                          },
+                        ),
+                      ],
+                    ),
+                    Text(
+                      'Dietary Preference:',
+                      style: TextStyle(
+                        fontSize: 16.0,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    SizedBox(height: 8.0),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        ChoiceChip(
+                          label: Text('veg'),
+                          selected: diet == 'veg',
+                          onSelected: (bool selected) {
+                            setState(() {
+                              diet = 'veg';
+                            });
+                          },
+                        ),
+                        ChoiceChip(
+                          label: Text('non_veg'),
+                          selected: diet == 'non_veg',
+                          onSelected: (bool selected) {
+                            setState(() {
+                              diet = 'non_veg';
+                            });
+                          },
+                        ),
+                        ChoiceChip(
+                          label: Text('vegan'),
+                          selected: diet == 'vegan',
+                          onSelected: (bool selected) {
+                            setState(() {
+                              diet = 'vegan';
+                            });
+                          },
+                        ),
+                      ],
+                    ),
                     ElevatedButton(
                       onPressed: () async {
                         // Save preferences to Firebase
+                        print("Save button clicked!!!!!1");
+
                         await DataHelper.updateUserPreferences({
-                          'preferences': {
-                            'min_age': _ageRangeValues.start.round(),
-                            'max_age': _ageRangeValues.end.round(),
-                            'gender': gender,
-                            'personality_type': personality_type,
-                            'employment': employment,
-                            'dietary_preference': diet,
-                            'smoking': smoking,
-                            'alcohol': alcohol,
-                            'pets': pets,
-                            'has_place': has_place,
-                            'city': _cityController.text,
-                            'state': _stateController.text
-                          }
+                          'min_age': _ageRangeValues.start.round(),
+                          'max_age': _ageRangeValues.end.round(),
+                          'gender': gender,
+                          'personality_type': personality_type,
+                          'employment': employment,
+                          'dietary_preference': diet,
+                          'smoking': smoking,
+                          'alcohol': alcohol,
+                          'pets': pets,
+                          'has_place': has_place,
+                          'city': _cityController.text,
+                          'state': _stateController.text
                         }, Auth.getCurrentUser() as String);
-                        // Navigate back to profile
+
                         Navigator.of(context)
                             .pushNamedAndRemoveUntil("/home", (route) => false);
                       },
