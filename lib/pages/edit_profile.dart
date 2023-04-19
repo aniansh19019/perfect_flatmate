@@ -13,6 +13,18 @@ import 'package:perfect_flatmate/util/theme.dart';
 import 'package:perfect_flatmate/widgets/forms.dart';
 import '../services/storage.dart';
 import 'dart:io' as io;
+import 'package:perfect_flatmate/pages/settings.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'dart:io';
+import 'package:intl/intl.dart';
+import 'package:file_picker/file_picker.dart';
+import 'package:flutter/material.dart';
+import 'package:perfect_flatmate/util/theme.dart';
+import 'package:perfect_flatmate/widgets/forms.dart';
+import '../services/auth.dart';
+import '../services/data.dart';
+
+import '../services/storage.dart';
 
 class Edit_Profile extends StatefulWidget {
   const Edit_Profile({super.key});
@@ -32,19 +44,23 @@ class _Edit_ProfileState extends State<Edit_Profile> {
   String? imagePath;
   String errorMessage = "";
 
-  // not sure if i have to use it or not
+  
+   dynamic data= DataHelper.getUserDataFromEmail(Auth.getCurrentUser()!);
+
+  
   // @override
   // void dispose() {
-  //   _nameController.dispose();
-  //   _emailController.dispose();
+  //   _aboutmeController.dispose();
+  //   _dobController .dispose();
   //   _dobController.dispose();
-  //   _cityController.dispose();
-  //   _phoneController.dispose();
-  //   _stateController.dispose();
+  //   _genderController.dispose();
+  //   _professionController.dispose();
   //   super.dispose();
   // }
 
-  void _saveDetails() {
+  void _saveDetails(dynamic email) {
+
+    debugPrint("in savedetail function");
     String imageUri = "";
     if (imagePath != null) {
       imageUri = Storage.uploadFile(imagePath!);
@@ -54,18 +70,25 @@ class _Edit_ProfileState extends State<Edit_Profile> {
       return;
     }
     print(imageUri);
-    _newUserDetails['aboutme'] = _aboutmeController.text;
+    _newUserDetails['about'] = _aboutmeController.text;
     _newUserDetails['dob'] = _dobController.text;
     _newUserDetails['gender'] = _genderController.text;
-    _newUserDetails['profession'] = _professionController.text;
+    _newUserDetails['employment'] = _professionController.text;
     _newUserDetails['image'] = imageUri;
 
+    DataHelper.updateUserProfile(_newUserDetails);
 
-    DataHelper.addUser(_newUserDetails, context);
     //Navigator.of(context).pushNamedAndRemoveUntil("/home", (route) => false);
     //
 
-    //Navigator.of(context).pushNamedAndRemoveUntil("/edit", (route) => false);
+    Navigator.of(context).pushNamedAndRemoveUntil("/settings", (route) => false);
+
+    // Navigator.push(
+    //               context,
+    //               MaterialPageRoute(
+    //                 builder: (context) => Settings(),
+    //               ),
+    //             );
   }
 
   @override
@@ -80,11 +103,21 @@ class _Edit_ProfileState extends State<Edit_Profile> {
           color:  Colors.red.shade800,),
           onPressed: () {},),
         ),
-      body: Container(
-        child: GestureDetector(
-          onTap: () { FocusScope.of(context).unfocus();
-          },
-          child: ListView(
+      body: FutureBuilder<QuerySnapshot<Object?>?>
+      (
+        future: data,
+        builder: (BuildContext context, AsyncSnapshot<QuerySnapshot<Object?>?> snapshot)
+        {
+          if (snapshot.hasError) {
+              return Text('Error: ${snapshot.error}');
+            } else if (!snapshot.hasData) {
+              return Center(child: CircularProgressIndicator());
+            } else
+            {
+              final email= snapshot.data!.docs.first.get('email');
+              return 
+              Container(
+        child: ListView(
             children: [
               SizedBox(
                 height: 15,
@@ -146,7 +179,7 @@ class _Edit_ProfileState extends State<Edit_Profile> {
                 height: 35,
               ),
               buildTextField("Abou Me", _aboutmeController),
-              buildTextField("Age", _dobController),
+              buildTextField("Date of Birth", _dobController),
               buildTextField("Gender", _genderController),
               buildTextField("Profession", _professionController),
               SizedBox(
@@ -157,50 +190,39 @@ class _Edit_ProfileState extends State<Edit_Profile> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
+                    ElevatedButton(
+                onPressed: ()async => {
+                  _saveDetails(email)
+                },
+                child: Text('Save'),
+              )
                     
-                    ElevatedButton(
-                    onPressed: (){},
-                    child: Text("Cancel", style: TextStyle(fontSize: 14,letterSpacing: 2.2),)
-                    ),
-                    ElevatedButton(
-                      onPressed: () {
-                        _saveDetails();
-                        },
-                      child: Text('Save'),
-                    ),
                   ],
                 ),
               )
 
             ],
           ),
-        ),
-      ),
+      );
+            }
+        }
+        
+      )
+      
     );
   }
 
-  // Widget buildTextField(String lt, String ph) {
-  //   return Padding(
-  //     padding: const EdgeInsets.only(bottom: 35.0, left: 20.0),
-  //     child: TextField(
-  //               decoration: InputDecoration(
-  //                 contentPadding: EdgeInsets.only(bottom: 3),
-  //                 labelText: lt,
-  //                 floatingLabelBehavior: FloatingLabelBehavior.always,
-  //                 labelStyle: TextStyle(
-  //                   color: Colors.red.shade800
-  //                 ),
-  //                 hintText: ph,
-  //                 hintStyle: TextStyle(
-  //                   fontSize: 16,
-  //                   fontWeight: FontWeight.bold,
-  //                   color: Colors.black
-  //                 )
-        
-  //               ),
-  //             ),
-  //   );
-  // }
+  // Container(
+                    //   margin: EdgeInsets.all(10),  
+                    //   child: OutlinedButton( 
+                    //     child: Text("Save", style: TextStyle(fontSize: 20.0),),  
+                    //     style: OutlinedButton.styleFrom( 
+                    //       primary: Colors.red.shade800,
+                    //       shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(10)))),
+                    //     onPressed: () => {_saveDetails()}, 
+                    //   ),
+                    // ),
+
 
   Widget buildTextField(String lt,  TextEditingController ct) {
     return Padding(
