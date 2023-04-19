@@ -20,7 +20,7 @@ class _LikesState extends State<Likes> {
   @override
   void initState() {
     // TODO: implement initState
-    swipeItemsFuture = DataHelper.getLikes();
+    swipeItemsFuture = DataHelper.getLikes(context);
     super.initState();
   }
 
