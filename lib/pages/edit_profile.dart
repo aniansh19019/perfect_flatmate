@@ -2,10 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:swipe_cards/swipe_cards.dart';
-
+import '../services/storage.dart';
 import '../services/auth.dart';
 import '../services/data.dart';
 import '../widgets/swipe_view.dart';
+import 'dart:io';
+import 'package:intl/intl.dart';
+import 'package:file_picker/file_picker.dart';
+import 'package:perfect_flatmate/util/theme.dart';
+import 'package:perfect_flatmate/widgets/forms.dart';
+import '../services/storage.dart';
+import 'dart:io' as io;
 
 class Edit_Profile extends StatefulWidget {
   const Edit_Profile({super.key});
@@ -17,7 +24,7 @@ class Edit_Profile extends StatefulWidget {
 class _Edit_ProfileState extends State<Edit_Profile> {
 
   TextEditingController _aboutmeController = TextEditingController();
-  TextEditingController _ageController = TextEditingController();
+  TextEditingController _dobController = TextEditingController();
   TextEditingController _genderController = TextEditingController();
   TextEditingController _professionController = TextEditingController();
 
@@ -37,12 +44,36 @@ class _Edit_ProfileState extends State<Edit_Profile> {
   //   super.dispose();
   // }
 
+  void _saveDetails() {
+    String imageUri = "";
+    if (imagePath != null) {
+      imageUri = Storage.uploadFile(imagePath!);
+    } else {
+      errorMessage = "Please select an image!";
+      setState(() {});
+      return;
+    }
+    print(imageUri);
+    _newUserDetails['aboutme'] = _aboutmeController.text;
+    _newUserDetails['dob'] = _dobController.text;
+    _newUserDetails['gender'] = _genderController.text;
+    _newUserDetails['profession'] = _professionController.text;
+    _newUserDetails['image'] = imageUri;
+
+
+    DataHelper.addUser(_newUserDetails, context);
+    //Navigator.of(context).pushNamedAndRemoveUntil("/home", (route) => false);
+    //
+
+    //Navigator.of(context).pushNamedAndRemoveUntil("/edit", (route) => false);
+  }
+
   @override
   Widget build(BuildContext context) {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text("Likes"),
+        title: Text("Edit Settings"),
         elevation: 1,
         leading: IconButton(
           icon: Icon(Icons.arrow_back,
@@ -91,7 +122,22 @@ class _Edit_ProfileState extends State<Edit_Profile> {
                         ),
                         color: Colors.red.shade800
                       ),
-                      child: Icon(Icons.edit,color: Colors.red.shade800,),
+                      child: IconButton  (icon:Icon(Icons.edit,color: Colors.white),
+                      onPressed: () async{
+                        FilePickerResult? result =
+                            await FilePicker.platform.pickFiles();
+
+                        if (result != null) {
+                          // File file = File(result.files.single.path!);
+
+                          setState(() {
+                            imagePath = result.files.single.path!;
+                          });
+                          // Storage.uploadFile(filePath)
+                        } else {
+                          // User canceled the picker
+                        }
+                      }),
                     ))
                   ],
                 ),
@@ -99,25 +145,31 @@ class _Edit_ProfileState extends State<Edit_Profile> {
               SizedBox(
                 height: 35,
               ),
-              buildTextField("Abou Me", "Need a new flatmate"),
-              buildTextField("Age", "22"),
-              buildTextField("Gender", "Female"),
-              buildTextField("Profession", "Software Engineer"),
+              buildTextField("Abou Me", _aboutmeController),
+              buildTextField("Age", _dobController),
+              buildTextField("Gender", _genderController),
+              buildTextField("Profession", _professionController),
               SizedBox(
                 height: 35,
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  OutlinedButton(
-                  onPressed: (){},
-                  child: Text("Cancel", style: TextStyle(fontSize: 14,letterSpacing: 2.2,color: Colors.red.shade800),)
-                  ),
-                  OutlinedButton(
-                  onPressed: (){},
-                  child: Text("Save", style: TextStyle(fontSize: 14,letterSpacing: 2.2,color: Colors.red.shade800),)
-                  ),
-                ],
+              Padding(
+                padding: const EdgeInsets.only(left: 10.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    
+                    ElevatedButton(
+                    onPressed: (){},
+                    child: Text("Cancel", style: TextStyle(fontSize: 14,letterSpacing: 2.2),)
+                    ),
+                    ElevatedButton(
+                      onPressed: () {
+                        _saveDetails();
+                        },
+                      child: Text('Save'),
+                    ),
+                  ],
+                ),
               )
 
             ],
@@ -127,28 +179,39 @@ class _Edit_ProfileState extends State<Edit_Profile> {
     );
   }
 
-  Widget buildTextField(String labelText, String placeholder) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 35.0),
-      child: TextField(
-                decoration: InputDecoration(
-                  contentPadding: EdgeInsets.only(bottom: 3),
-                  labelText: "Name",
-                  floatingLabelBehavior: FloatingLabelBehavior.always,
-                  labelStyle: TextStyle(
-                    color: Colors.red.shade800
-                  ),
-                  hintText: "John Doe",
-                  hintStyle: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black
-                  )
+  // Widget buildTextField(String lt, String ph) {
+  //   return Padding(
+  //     padding: const EdgeInsets.only(bottom: 35.0, left: 20.0),
+  //     child: TextField(
+  //               decoration: InputDecoration(
+  //                 contentPadding: EdgeInsets.only(bottom: 3),
+  //                 labelText: lt,
+  //                 floatingLabelBehavior: FloatingLabelBehavior.always,
+  //                 labelStyle: TextStyle(
+  //                   color: Colors.red.shade800
+  //                 ),
+  //                 hintText: ph,
+  //                 hintStyle: TextStyle(
+  //                   fontSize: 16,
+  //                   fontWeight: FontWeight.bold,
+  //                   color: Colors.black
+  //                 )
         
-                ),
+  //               ),
+  //             ),
+  //   );
+  // }
+
+  Widget buildTextField(String lt,  TextEditingController ct) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 35.0, left: 10.0),
+      child: EasyFormField(
+                label: lt,
+                textEditingController: ct,
               ),
     );
   }
+
 
 
 
