@@ -3,6 +3,9 @@ import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:perfect_flatmate/pages/messaging.dart';
 import 'package:perfect_flatmate/util/theme.dart';
+import 'package:perfect_flatmate/widgets/image_avatar.dart';
+import '../services/data.dart';
+import 'package:perfect_flatmate/services/auth.dart';
 
 class Matches extends StatefulWidget {
   const Matches({super.key});
@@ -12,52 +15,64 @@ class Matches extends StatefulWidget {
 }
 
 class _MatchesState extends State<Matches> {
+  Future<List<Map<String, dynamic>>>? matches;
+
+  String? currentUser;
+  @override
+  void initState() {
+    // TODO: implement initState
+    matches = DataHelper.getMatches();
+    currentUser = Auth.getCurrentUser();
+
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
-    final List<Map<String, dynamic>> arrMatches = [
-      {
-        'title': 'Mansi',
-        'image': 'https://picsum.photos/id/1/200/200',
-      },
-      {
-        'title': 'Shanaya',
-        'image': 'https://picsum.photos/id/2/200/200',
-      },
-      {
-        'title': 'Naira',
-        'image': 'https://picsum.photos/id/3/200/200',
-      },
-    ];
     return Container(
       child: Scaffold(
         appBar: AppBar(
           title: const Text("Matches"),
         ),
-        body: ListView.separated(
-          itemCount: arrMatches.length,
-          separatorBuilder: (context, index) {
-            return Divider(
-              thickness: 2,
-            );
-          },
-          itemBuilder: (context, index) {
-            return ListTile(
-              leading: CircleAvatar(
-                backgroundImage: NetworkImage(arrMatches[index]['image']),
-              ),
-              title: Text(
-                arrMatches[index]['title'],
-                style: CustomTheme.h1,
-              ),
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => Messaging(),
-                  ),
-                );
-              },
-            );
+        body: FutureBuilder<List<Map<String, dynamic>>>(
+          future: matches,
+          builder: (BuildContext context, AsyncSnapshot snapshot) {
+            if (snapshot.hasError) {
+              return Text('Error: ${snapshot.error}');
+            } else if (!snapshot.hasData) {
+              return Center(child: CircularProgressIndicator());
+            } else {
+              return ListView.separated(
+                itemCount: snapshot.data.length,
+                separatorBuilder: (BuildContext context, int index) => Divider(
+                  thickness: 2,
+                ),
+                itemBuilder: (BuildContext context, int index) {
+                  final item = snapshot.data[index];
+                  return ListTile(
+                    leading: ImageAvatar(imageUri: item['image']),
+                    title: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          item['title'],
+                          style: CustomTheme.h1,
+                        ),
+                      ],
+                    ),
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) =>
+                              Messaging(otherEmail: item['email']),
+                        ),
+                      );
+                    },
+                  );
+                },
+              );
+            }
           },
         ),
       ),
