@@ -34,7 +34,7 @@ class MyApp extends StatelessWidget {
       
       theme: ThemeData(
         appBarTheme: AppBarTheme(
-          backgroundColor: Colors.transparent,
+          backgroundColor: Colors.white,
           elevation: 0,
           titleTextStyle: TextStyle(
           fontSize: 38,
