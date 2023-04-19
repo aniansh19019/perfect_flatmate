@@ -1,5 +1,5 @@
 import 'dart:io';
-
+import 'package:intl/intl.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:perfect_flatmate/util/theme.dart';
@@ -17,7 +17,6 @@ class AccountSetup extends StatefulWidget {
 
 class _AccountSetupState extends State<AccountSetup> {
   TextEditingController _nameController = TextEditingController();
-  TextEditingController _ageController = TextEditingController();
   TextEditingController _emailController = TextEditingController();
   TextEditingController _dobController = TextEditingController();
   TextEditingController _cityController = TextEditingController();
@@ -31,45 +30,59 @@ class _AccountSetupState extends State<AccountSetup> {
   @override
   void dispose() {
     _nameController.dispose();
-    _ageController.dispose();
     _emailController.dispose();
     _dobController.dispose();
+    _cityController.dispose();
+    _phoneController.dispose();
+    _stateController.dispose();
     super.dispose();
   }
 
-  void _saveDetails(additionalDetails) 
-  {
-    
-    if(imagePath != null)
-    {
-      String imageUri = Storage.uploadFile(imagePath!);
-    }
-    else
-    {
+  void _saveDetails(additionalDetails) {
+    String imageUri = "";
+    if (imagePath != null) {
+      imageUri = Storage.uploadFile(imagePath!);
+    } else {
       errorMessage = "Please select an image!";
-      setState(() {
-        
-      });
+      setState(() {});
       return;
     }
-    
+    print(imageUri);
     _newUserDetails['name'] = _nameController.text;
-    _newUserDetails['age'] = int.tryParse(_ageController.text);
+
     _newUserDetails['email'] = Auth.getCurrentUser();
-    _newUserDetails['dob'] = _dobController.text;
+    _newUserDetails['dob'] =
+        DateFormat('dd/MM/yyyy').parse(_dobController.text);
+    _newUserDetails['age'] =
+        (DateTime.now().difference(_newUserDetails['dob']).inDays / 365)
+            .floor()
+            .toString();
+
+    //DateTime.parse(_dobController.text).millisecondsSinceEpoch;
+    _newUserDetails['city'] = _cityController.text;
+    _newUserDetails['phone'] = _phoneController.text;
+    _newUserDetails['state'] = _stateController.text;
+    _newUserDetails['image'] = imageUri;
+    _newUserDetails['my_likes'] = List.empty();
+    _newUserDetails['my_dislikes'] = List.empty();
+    _newUserDetails['likes'] = List.empty();
+    _newUserDetails['dislikes'] = List.empty();
+    _newUserDetails['matches'] = List.empty();
+
     _newUserDetails.addAll(additionalDetails);
-    print(_newUserDetails); // Print the details for debugging purposes
+
     DataHelper.addUser(_newUserDetails, context);
 
     Navigator.of(context).pushNamedAndRemoveUntil("/home", (route) => false);
   }
 
   void _navigateToAdditionalDetails() async {
+    print("_navigateToAdditionalDetailsss ------------------");
     final additionalDetails =
         await Navigator.of(context).push(MaterialPageRoute(
       builder: (context) => AdditionalDetailsPage(),
     ));
-
+    print(additionalDetails);
     _saveDetails(additionalDetails);
   }
 
@@ -86,46 +99,61 @@ class _AccountSetupState extends State<AccountSetup> {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SizedBox(height: 12,),
-              Center(child: ElevatedButton(
-                style: ButtonStyle(
-                                  shape: MaterialStateProperty.all(CircleBorder()),
-                                  // backgroundColor: MaterialStateProperty.all(Colors.white)
-                                ),
-                onPressed: ()async
-                {
-                  FilePickerResult? result = await FilePicker.platform.pickFiles();
-                
-                  if (result != null) 
-                  {
-                    // File file = File(result.files.single.path!);
-                    
-                    setState(() {
-                      imagePath = result.files.single.path!;
-                    });
-                    // Storage.uploadFile(filePath)
-                  } 
-                  else 
-                  {
-                    // User canceled the picker
-                  }
-                }, child: Padding(
-                  padding: const EdgeInsets.all(10.0),
-                  child: Icon(
-                    Icons.image_outlined,
-                    size: 60,
-                    ),
-                ))),
-              SizedBox(height: 12,),
-              Center(child: Text(errorMessage, style: CustomTheme.error,),),
-              Center(child: Text((imagePath == null)?"Select Image":"Image selected:$imagePath", style: CustomTheme.body,)),
-              SizedBox(height: 16,),
+              SizedBox(
+                height: 12,
+              ),
+              Center(
+                  child: ElevatedButton(
+                      style: ButtonStyle(
+                        shape: MaterialStateProperty.all(CircleBorder()),
+                        // backgroundColor: MaterialStateProperty.all(Colors.white)
+                      ),
+                      onPressed: () async {
+                        FilePickerResult? result =
+                            await FilePicker.platform.pickFiles();
+
+                        if (result != null) {
+                          // File file = File(result.files.single.path!);
+
+                          setState(() {
+                            imagePath = result.files.single.path!;
+                          });
+                          // Storage.uploadFile(filePath)
+                        } else {
+                          // User canceled the picker
+                        }
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.all(10.0),
+                        child: Icon(
+                          Icons.image_outlined,
+                          size: 60,
+                        ),
+                      ))),
+              SizedBox(
+                height: 12,
+              ),
+              Center(
+                child: Text(
+                  errorMessage,
+                  style: CustomTheme.error,
+                ),
+              ),
+              Center(
+                  child: Text(
+                (imagePath == null)
+                    ? "Select Image"
+                    : "Image selected:$imagePath",
+                style: CustomTheme.body,
+              )),
+              SizedBox(
+                height: 16,
+              ),
               EasyFormField(
                 label: "Name",
                 textEditingController: _nameController,
                 required: true,
               ),
-             
               SizedBox(height: 16.0),
               EasyFormField(
                 label: 'Date of Birth (dd/mm/yyyy)',
@@ -146,7 +174,6 @@ class _AccountSetupState extends State<AccountSetup> {
                 label: "City",
                 textEditingController: _cityController,
               ),
-              
               ElevatedButton(
                 onPressed: () {
                   _navigateToAdditionalDetails();
@@ -167,105 +194,23 @@ class AdditionalDetailsPage extends StatefulWidget {
 }
 
 class _AdditionalDetailsPageState extends State<AdditionalDetailsPage> {
-  TextEditingController _cityController = TextEditingController();
-  TextEditingController _phoneController = TextEditingController();
-  TextEditingController _stateController = TextEditingController();
-  @override
-  void dispose() {
-    _cityController.dispose();
-    _phoneController.dispose();
-    _stateController.dispose();
-    super.dispose();
-  }
-
-  void _saveDetails(a) {
-    Map<String, dynamic> additionalDetails = {};
-    additionalDetails['city'] = _cityController.text;
-    additionalDetails['phone'] = _phoneController.text;
-    additionalDetails['state'] = _stateController.text;
-    additionalDetails.addAll(a);
-    Navigator.of(context).pop(additionalDetails);
-  }
-
-  void _navigateToAdditionalDetails_2() async {
-    final additionalDetails =
-        await Navigator.of(context).push(MaterialPageRoute(
-      builder: (context) => AdditionalDetailsPage_2(),
-    ));
-
-    _saveDetails(additionalDetails);
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Additional Details'),
-      ),
-      body: Padding(
-        padding: EdgeInsets.all(16.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            TextField(
-              controller: _cityController,
-              decoration: InputDecoration(
-                hintText: 'City',
-              ),
-            ),
-            SizedBox(height: 16.0),
-            TextField(
-              controller: _stateController,
-              decoration: InputDecoration(
-                hintText: 'State',
-              ),
-            ),
-            SizedBox(height: 16.0),
-            TextField(
-              controller: _phoneController,
-              keyboardType: TextInputType.phone,
-              decoration: InputDecoration(
-                hintText: 'Phone',
-              ),
-            ),
-            SizedBox(height: 32.0),
-            ElevatedButton(
-              onPressed: () {
-                _navigateToAdditionalDetails_2();
-              },
-              child: Text('Next'),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class AdditionalDetailsPage_2 extends StatefulWidget {
-  @override
-  _AdditionalDetailsPageState_2 createState() =>
-      _AdditionalDetailsPageState_2();
-}
-
-class _AdditionalDetailsPageState_2 extends State<AdditionalDetailsPage_2> {
   bool? has_place;
   bool? smoking;
-  bool? _hasPet;
+  bool? pets;
   bool? alcohol;
   bool? introvert;
   String diet = 'veg';
   String gender = 'other';
   String employment = 'student';
   String about = '';
+  TextEditingController _aboutController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
     has_place = false;
     smoking = false;
-    _hasPet = false;
+    pets = false;
     alcohol = false;
     introvert = false;
   }
@@ -274,13 +219,13 @@ class _AdditionalDetailsPageState_2 extends State<AdditionalDetailsPage_2> {
     Map<String, dynamic> additionalDetails = {};
     additionalDetails['has_place'] = has_place;
     additionalDetails['smoking'] = smoking;
-    additionalDetails['hasPet'] = _hasPet;
+    additionalDetails['hasPet'] = pets;
     additionalDetails['alcohol'] = alcohol;
     additionalDetails['introvert'] = introvert;
     additionalDetails['diet'] = diet;
     additionalDetails['gender'] = gender;
     additionalDetails['employment'] = employment;
-
+    print(additionalDetails);
     Navigator.of(context).pop(additionalDetails);
   }
 
@@ -417,10 +362,10 @@ class _AdditionalDetailsPageState_2 extends State<AdditionalDetailsPage_2> {
                 children: [
                   Radio(
                     value: true,
-                    groupValue: _hasPet,
+                    groupValue: pets,
                     onChanged: (value) {
                       setState(() {
-                        _hasPet = value;
+                        pets = value;
                       });
                     },
                   ),
@@ -428,10 +373,10 @@ class _AdditionalDetailsPageState_2 extends State<AdditionalDetailsPage_2> {
                   SizedBox(width: 16.0),
                   Radio(
                     value: false,
-                    groupValue: _hasPet,
+                    groupValue: pets,
                     onChanged: (value) {
                       setState(() {
-                        _hasPet = value;
+                        pets = value;
                       });
                     },
                   ),
