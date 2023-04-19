@@ -23,7 +23,7 @@ class FormFieldLabelWrapper extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       labelDisabled?Container():Text(label, style: CustomTheme.body,),
-                      SizedBox(height: 4,),
+                      SizedBox(height: 6,),
                       child,
                     ],
                   ),
@@ -87,13 +87,21 @@ class _EasyFormFieldState extends State<EasyFormField>
         controller: widget.textEditingController,
         decoration: InputDecoration(
           hintText: "Enter ${widget.label}",
-          border:OutlineInputBorder(),
+          border:OutlineInputBorder(
+            borderRadius: BorderRadius.circular(30),
+            // borderSide: BorderSide.none,
+          ),
         ),
       ),
     );
   }
 }
-
+/*
+OutlineInputBorder(
+      borderRadius: BorderRadius.circular(20),
+      borderSide: BorderSide.none,
+    ),
+*/
 
 // class DataForm extends StatefulWidget 
 // {

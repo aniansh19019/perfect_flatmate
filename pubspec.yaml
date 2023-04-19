@@ -43,6 +43,7 @@ dependencies:
   swipe_cards: ^2.0.0+1
   firebase_storage: ^11.1.0
   uuid: ^3.0.7
+  file_picker: ^5.2.9
 
 dev_dependencies:
   flutter_test:
