@@ -62,6 +62,9 @@ class _LoginState extends State<Login>
 
 
     return Scaffold(
+      appBar: AppBar(
+        title: Center(child: Text("Perfect Flatmates")),
+      ),
   
       body: SafeArea(
         child: Center(
@@ -71,8 +74,15 @@ class _LoginState extends State<Login>
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Spacer(flex: 4),
+
+                Spacer(flex: 2),
                 // Text("We Event Check In Admin"),
+                Expanded(
+                  flex: 6,
+                  child: Image.asset("assets/logo.png",
+                      scale: 1
+                    ),
+                ),
                
                 // Spacer(),
                 Spacer(),
@@ -91,11 +101,18 @@ class _LoginState extends State<Login>
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         ElevatedButton(
+                          style: ButtonStyle(
+                            backgroundColor: MaterialStateProperty.all(Colors.white)
+                          ),
                           onPressed: ()
                           {
                             onSignUpFormSubmit("");
                           }, 
-                          child: Text("Sign Up")
+                          child: Text("Sign Up", 
+                          style: TextStyle(
+                            color: Palette.kToDark
+                            ),
+                          )
                           ),
                           SizedBox(width: 20,),
                           
