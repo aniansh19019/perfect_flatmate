@@ -27,23 +27,22 @@ class DataHelper {
     return "";
   }
 
-  static Future<QuerySnapshot?> getUserDataFromField(String field, String value) async
-  {
+  static Future<QuerySnapshot?> getUserDataFromField(
+      String field, String value) async {
     QuerySnapshot<Map<String, dynamic>> docs;
 
-    try
-    {
-      docs = await FirebaseFirestore.instance.collection('users').where(field, isEqualTo: value).get();
-    }
-    catch(error)
-    {
+    try {
+      docs = await FirebaseFirestore.instance
+          .collection('users')
+          .where(field, isEqualTo: value)
+          .get();
+    } catch (error) {
       debugPrint(error.toString());
       // return "Error getting user data from $field!";
       return null;
     }
 
-    if(docs.size == 0)
-    {
+    if (docs.size == 0) {
       return null;
     }
     return docs;
@@ -160,6 +159,14 @@ class DataHelper {
     return "";
   }
 
+  static Future<Map<String, dynamic>> getUserPreferences() async {
+    var userRecord =
+        (await getUserDataFromEmail(Auth.getCurrentUser()!))!.docs[0];
+    Map<String, dynamic> userPreferences = userRecord.get('preferences');
+
+    return userPreferences;
+  }
+
   static Future emailExists(String email) async {
     var data = await getUserDataFromEmail(email);
     if (data is String) {
@@ -223,7 +230,6 @@ class DataHelper {
     }
     var selfDocId = selfRecord!.reference.id;
     try {
-      
       await FirebaseFirestore.instance
           .collection('users')
           .doc(selfDocId)
