@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:perfect_flatmate/services/auth.dart';
 import 'package:perfect_flatmate/util/data_model.dart';
 import 'package:perfect_flatmate/util/swipe_item_builder.dart';
+import 'package:perfect_flatmate/widgets/dialog_box.dart';
 import 'package:swipe_cards/swipe_cards.dart';
 
 // TODO error handling in updates
@@ -52,7 +53,7 @@ class DataHelper {
     return await getUserDataFromField('email', email);
   }
 
-  static Future<List<SwipeItem>?> getListings() async {
+  static Future<List<SwipeItem>?> getListings(context) async {
     QuerySnapshot<Map<String, dynamic>> docs;
 
     try {
@@ -78,11 +79,11 @@ class DataHelper {
       
     }
 
-    var swipeItems = SwipeItemBuilder.userListToSwipeItems(finalDocs);
+    var swipeItems = SwipeItemBuilder.userListToSwipeItems(finalDocs, context);
     return swipeItems;
   }
 
-  static Future<List<SwipeItem>> getLikes() async {
+  static Future<List<SwipeItem>> getLikes(context) async {
     // TODO: error handling
     List<dynamic> userList = List.empty(growable: true);
     var userRecord =
@@ -92,7 +93,7 @@ class DataHelper {
       var otherRecord = (await getUserDataFromEmail(like))!.docs[0];
       userList.add(otherRecord);
     }
-    var swipeItems = SwipeItemBuilder.userListToSwipeItems(userList);
+    var swipeItems = SwipeItemBuilder.userListToSwipeItems(userList, context);
     return swipeItems;
   }
 
@@ -163,7 +164,7 @@ class DataHelper {
 
   }
 
-  static Future<dynamic> submitLike(String email) async {
+  static Future<dynamic> submitLike(String email, dynamic context) async {
     // TODO error handling
     var otherRecord = (await getUserDataFromEmail(email))?.docs[0];
     var selfRecord =
@@ -201,6 +202,9 @@ class DataHelper {
     var selfMyDislikes = selfRecord.get('my_dislikes');
     var otherMyDislikes = otherRecord.get('my_dislikes');
 
+    showDialog(context: context, builder: (BuildContext context) => 
+      MatchDialog(userData: otherRecord,));
+
      // add to eachother's matches
     if(didMatch)
     {
@@ -232,7 +236,11 @@ class DataHelper {
         debugPrint(error.toString());
         return "Error liking";
       }
-    } else {
+
+      
+    } 
+    
+    else {
       try {
         // update likes for the other person
         otherLikes.add(Auth.getCurrentUser());
