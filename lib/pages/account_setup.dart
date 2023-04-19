@@ -59,7 +59,7 @@ class _AccountSetupState extends State<AccountSetup> {
       setState(() {});
       return;
     }
-    print(imageUri);
+  
     _newUserDetails['name'] = _nameController.text;
 
     _newUserDetails['email'] = email;
@@ -85,10 +85,10 @@ class _AccountSetupState extends State<AccountSetup> {
 
     DataHelper.addUser(_newUserDetails, context);
     Auth.login(email, password, false, context);
-    Navigator.of(context).pushNamedAndRemoveUntil("/home", (route) => false);
-    //
+    //Navigator.of(context).pushNamedAndRemoveUntil("/home", (route) => false);
+    
 
-    //Navigator.of(context).pushNamedAndRemoveUntil("/edit", (route) => false);
+    Navigator.of(context).pushNamedAndRemoveUntil("/edit", (route) => false);
   }
 
   void _navigateToAdditionalDetails() async {
