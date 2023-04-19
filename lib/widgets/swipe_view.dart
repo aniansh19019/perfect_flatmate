@@ -20,7 +20,7 @@ class SwipeView extends StatefulWidget
 class _SwipeViewState extends State<SwipeView> 
 {
   MatchEngine? matchEngine;
-  
+
   @override
   Widget build(BuildContext context) 
   {
@@ -35,21 +35,35 @@ class _SwipeViewState extends State<SwipeView>
             matchEngine = MatchEngine(swipeItems: swipeItems);
             return Stack(
               children: [
+                Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(Icons.no_accounts_outlined, size: 40,),
+                      SizedBox(height: 12,),
+                      Text("No More Entries Left!", style:CustomTheme.h1),
+                    ],
+                  )),
                 SwipeCards(
                   upSwipeAllowed: false,
                 matchEngine: matchEngine!,
-                onStackFinished: () {},
+                onStackFinished: () 
+                {
+                  // isStackEmpty
+                },
                 likeTag: Container(
+                  padding: EdgeInsets.all(10),
                   child: Icon(
                     Icons.favorite, 
-                    color: Colors.pinkAccent,
-                    size: 50,
+                    color: Colors.pinkAccent.withAlpha(128),
+                    size: 160,
                     )),
                 nopeTag: Container(
+                  padding: EdgeInsets.all(10),
                   child: Icon(
-                    Icons.cancel_outlined, 
-                    color: Colors.black,
-                    size: 50,
+                    Icons.cancel_rounded, 
+                    color: Colors.black.withAlpha(128),
+                    size: 160,
                     )),
                 itemBuilder: (context, index) 
                 {

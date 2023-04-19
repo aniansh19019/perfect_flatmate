@@ -95,7 +95,8 @@ class CardHolder extends StatelessWidget
 {
   final Widget child;
   final Color color;
-  const CardHolder({super.key, required this.child, this.color = Colors.grey});
+  final double elevation;
+  const CardHolder({super.key, required this.child, this.color = Colors.grey, this.elevation = 10});
 
   @override
   Widget build(BuildContext context) {
@@ -105,7 +106,7 @@ class CardHolder extends StatelessWidget
       child: Padding(
         padding: const EdgeInsets.fromLTRB(20, 20, 20, 20),
         child: Card(
-          elevation: 10,
+          elevation: elevation,
           color: color,
           shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(20)

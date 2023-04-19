@@ -18,10 +18,17 @@ class Explore extends StatefulWidget {
 class _ExploreState extends State<Explore> 
 {
   Future<List<SwipeItem>?>? swipeItemsFuture;
+  
+  @override
+  void initState() {
+    // TODO: implement initState
+    swipeItemsFuture = DataHelper.getListings();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
-    swipeItemsFuture = DataHelper.getListings();
+    
     return Scaffold(
       appBar: AppBar(title: Text("Explore")),
       body: Container(
