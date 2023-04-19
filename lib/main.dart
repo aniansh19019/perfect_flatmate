@@ -9,6 +9,7 @@ import 'package:flutter/rendering.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:perfect_flatmate/util/theme.dart';
 import 'firebase_options.dart';
+import 'package:perfect_flatmate/pages/settings.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -104,6 +105,7 @@ class MyApp extends StatelessWidget {
         "/login/account_setup": (context) => AccountSetup(),
         "/home": (context) => Home(),
         "/edit": (context) => EditPreferences(),
+        "/settings": (context) => Settings(),
       },
     );
   }
