@@ -5,7 +5,7 @@ class SwipeItemBuilder
 {
   
 
-  static List<SwipeItem> userListToSwipeItems(List<dynamic>  userList)
+  static List<SwipeItem> userListToSwipeItems(List<dynamic>  userList, context)
   {
     List<SwipeItem> swipeItems = List.empty(growable: true);
     for (dynamic userData in userList)
@@ -15,7 +15,7 @@ class SwipeItemBuilder
           content: userData,
           likeAction: ()
           {
-            DataHelper.submitLike(userData.get('email'));
+            DataHelper.submitLike(userData.get('email'), context);
           },
           nopeAction: ()
           {
