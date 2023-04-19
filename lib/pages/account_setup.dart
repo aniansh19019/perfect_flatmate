@@ -26,6 +26,17 @@ class _AccountSetupState extends State<AccountSetup> {
   Map<String, dynamic> _newUserDetails = {};
   String? imagePath;
   String errorMessage = "";
+  late String email;
+  late String password;
+
+  @override
+  void didChangeDependencies() {
+    // TODO: implement didChangeDependencies
+    Map<String, dynamic> creds = ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
+    email = creds['email'];
+    password = creds['password'];
+    super.didChangeDependencies();
+  }
 
   @override
   void dispose() {
@@ -50,7 +61,7 @@ class _AccountSetupState extends State<AccountSetup> {
     print(imageUri);
     _newUserDetails['name'] = _nameController.text;
 
-    _newUserDetails['email'] = Auth.getCurrentUser();
+    _newUserDetails['email'] = email;
     _newUserDetails['dob'] =
         DateFormat('dd/MM/yyyy').parse(_dobController.text);
     _newUserDetails['age'] =
@@ -73,7 +84,9 @@ class _AccountSetupState extends State<AccountSetup> {
 
     DataHelper.addUser(_newUserDetails, context);
 
-    Navigator.of(context).pushNamedAndRemoveUntil("/home", (route) => false);
+    // Navigator.of(context).pushNamedAndRemoveUntil("/home", (route) => false);
+    // 
+    Auth.login(email, password, false, context);
   }
 
   void _navigateToAdditionalDetails() async {
@@ -90,7 +103,7 @@ class _AccountSetupState extends State<AccountSetup> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('New User Details'),
+        title: Text('User Details'),
       ),
       body: SingleChildScrollView(
         child: Padding(
