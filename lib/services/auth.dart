@@ -26,7 +26,7 @@ class Auth {
         return;
       }
     }
-    //login(email, password, true, context);
+    login(email, password, true, context);
     Navigator.of(context).pushNamed("/login/account_setup");
   }
 
