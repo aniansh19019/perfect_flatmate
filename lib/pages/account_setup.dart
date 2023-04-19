@@ -102,6 +102,7 @@ class _AccountSetupState extends State<AccountSetup> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        centerTitle: true,
         title: Text('User Details'),
       ),
       body: SingleChildScrollView(
@@ -246,6 +247,7 @@ class _AdditionalDetailsPageState extends State<AdditionalDetailsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        centerTitle: true,
         title: Text('Additional Details'),
       ),
       body: SingleChildScrollView(

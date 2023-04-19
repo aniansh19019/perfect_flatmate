@@ -41,7 +41,10 @@ class _MessagingState extends State<Messaging> {
     
     return Scaffold(
       appBar: AppBar(
+
         title: Text(widget.otherName),
+        centerTitle: true,
+
       ),
       body: Column(
         children: <Widget>[
