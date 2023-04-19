@@ -78,6 +78,7 @@ class _EasyFormFieldState extends State<EasyFormField>
       labelDisabled: widget.labelDisabled,
       label: widget.label,
       child: TextFormField(
+        
         keyboardType: (widget.label == "Email")?TextInputType.emailAddress:TextInputType.text,
         autovalidateMode: AutovalidateMode.disabled,
         onFieldSubmitted: enterAction,
@@ -88,6 +89,7 @@ class _EasyFormFieldState extends State<EasyFormField>
         decoration: InputDecoration(
           hintText: "Enter ${widget.label}",
           border:OutlineInputBorder(
+            
             borderRadius: BorderRadius.circular(30),
             // borderSide: BorderSide.none,
           ),
