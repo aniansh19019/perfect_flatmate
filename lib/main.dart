@@ -59,6 +59,7 @@ class MyApp extends StatelessWidget {
           brightness: Brightness.light,
         ),
         appBarTheme: AppBarTheme(
+          iconTheme: IconThemeData(color: CustomTheme.primaryPink),
           backgroundColor: Color.fromARGB(255, 250, 250, 250),
           elevation: 0,
           titleTextStyle: TextStyle(

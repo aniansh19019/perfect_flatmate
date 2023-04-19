@@ -7,7 +7,9 @@ import 'package:perfect_flatmate/services/auth.dart';
 
 class Messaging extends StatefulWidget {
   final String otherEmail;
-  const Messaging({super.key, required this.otherEmail, required});
+  final String otherName;
+  const Messaging(
+      {super.key, required this.otherEmail, required this.otherName});
 
   @override
   State<Messaging> createState() => _MessagingState();
@@ -17,35 +19,46 @@ class _MessagingState extends State<Messaging> {
   final TextEditingController _textEditingController = TextEditingController();
   // widget.otherEmail
   final _firebase = FirebaseFirestore.instance;
-  late final Stream<QuerySnapshot<Map<String, dynamic>>> _chatStream;
+  late final Future<List> _chats;
 
   @override
   void initState() {
-    super.initState();
     // Set up chat stream
-    _chatStream = _firebase
-        .collection('messages')
-        .orderBy('timestamp', descending: true)
-        .snapshots();
+    _chats = MessageHelper.getChats(widget.otherEmail);
+    
+    
+    // _chatStream2 = _firebase
+    //     .collection('messages')
+    //     .where('FromID', isEqualTo: Auth.getCurrentUser())
+    //     .get();
+    //_chatStream = await Future.wait([_chatStream1,_chatStream2]);
+    super.initState();
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context) 
+  {
+    
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.otherEmail),
+        title: Text(widget.otherName),
       ),
       body: Column(
         children: <Widget>[
           Expanded(
-            child: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
-              stream: _chatStream,
-              builder: (context, snapshot) {
+            child: FutureBuilder(
+              future: _chats,
+              builder: (context, AsyncSnapshot<List> snapshot) {
                 if (!snapshot.hasData) {
-                  return Center(child: CircularProgressIndicator());
+                  return Center(child: CircularProgressIndicator(
+                  ));
+                }
+                if(snapshot.hasError)
+                {
+                  return Center(child: Text(snapshot.error.toString()),);
                 }
 
-                final chatDocs = snapshot.data!.docs;
+                final chatDocs = snapshot.data!;
                 return ListView.builder(
                   reverse: true,
                   itemCount: chatDocs.length,
