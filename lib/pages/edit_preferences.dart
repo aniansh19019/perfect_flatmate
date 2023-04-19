@@ -48,8 +48,9 @@ class _EditPreferencesState extends State<EditPreferences> {
                 final data = snapshot.data!.docs.first.get('preferences')
                     as Map<String, dynamic>;
 
-                // _ageRangeValues = RangeValues(data['min_age'] as double? ?? 18,
-                //     data['max_age'] as double? ?? 60);
+                _ageRangeValues = RangeValues(
+                    (data['min_age'] as int?)?.toDouble() ?? 18,
+                    (data['max_age'] as int?)?.toDouble() ?? 60);
                 gender = data['gender'] as String? ?? 'everyone';
                 personality_type =
                     data['personality_type'] as String? ?? 'introvert';
