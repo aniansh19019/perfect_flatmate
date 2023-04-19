@@ -32,6 +32,7 @@ class _MessagingState extends State<Messaging> {
     return Container(
         child: Scaffold(
       appBar: AppBar(
+        centerTitle: true,
         title: const Text("Chat"),
       ),
       body: Column(

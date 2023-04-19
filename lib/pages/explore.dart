@@ -30,7 +30,7 @@ class _ExploreState extends State<Explore>
   Widget build(BuildContext context) {
     
     return Scaffold(
-      appBar: AppBar(title: Text("Explore")),
+      appBar: AppBar(centerTitle: true, title: Text("Explore")),
       body: Container(
       child: SwipeView(swipeItemsFuture: swipeItemsFuture!,)
     ),

@@ -75,6 +75,7 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
         key: _scaffoldKey,
         appBar: AppBar(
+          centerTitle: true,
           title: Text(widget.title!),
         ),
         body: Container(

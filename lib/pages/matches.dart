@@ -31,6 +31,7 @@ class _MatchesState extends State<Matches> {
     return Container(
       child: Scaffold(
         appBar: AppBar(
+          centerTitle: true,
           title: const Text("Matches"),
         ),
         body: ListView.separated(
