@@ -31,20 +31,23 @@ class _HomeState extends State<Home> {
         child: Scaffold(
           // appBar: AppBar(),
           bottomNavigationBar: SafeArea(
-            child: TabBar(tabs: [
-              Tab(
-                  // text: "Car",
-                  icon: Icon(Icons.favorite_border)),
-              Tab(
-                  // text: "Transit",
-                  icon: Icon(Icons.search)),
-              Tab(
-                  // text: "Transit",
-                  icon: Icon(Icons.chat_bubble_outline_rounded)),
-              Tab(
-                  // text: "Bike",
-                  icon: Icon(Icons.account_circle_outlined)),
-            ]),
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
+              child: TabBar(tabs: [
+                Tab(
+                    // text: "Car",
+                    icon: Icon(Icons.favorite_border)),
+                Tab(
+                    // text: "Transit",
+                    icon: Icon(Icons.search)),
+                Tab(
+                    // text: "Transit",
+                    icon: Icon(Icons.chat_bubble_outline_rounded)),
+                Tab(
+                    // text: "Bike",
+                    icon: Icon(Icons.account_circle_outlined)),
+              ]),
+            ),
           ),
 
           body: SafeArea(
