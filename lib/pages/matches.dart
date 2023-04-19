@@ -3,6 +3,8 @@ import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:perfect_flatmate/pages/messaging.dart';
 import 'package:perfect_flatmate/util/theme.dart';
+import 'package:perfect_flatmate/widgets/image_avatar.dart';
+import '../services/data.dart';
 
 class Matches extends StatefulWidget {
   const Matches({super.key});
@@ -12,6 +14,15 @@ class Matches extends StatefulWidget {
 }
 
 class _MatchesState extends State<Matches> {
+  Future<List<Map<String, dynamic>>>? matches;
+  @override
+  void initState() {
+    // TODO: implement initState
+    matches = DataHelper.getMatches();
+
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     final List<Map<String, dynamic>> arrMatches = [
@@ -33,31 +44,44 @@ class _MatchesState extends State<Matches> {
         appBar: AppBar(
           title: const Text("Matches"),
         ),
-        body: ListView.separated(
-          itemCount: arrMatches.length,
-          separatorBuilder: (context, index) {
-            return Divider(
-              thickness: 2,
-            );
-          },
-          itemBuilder: (context, index) {
-            return ListTile(
-              leading: CircleAvatar(
-                backgroundImage: NetworkImage(arrMatches[index]['image']),
-              ),
-              title: Text(
-                arrMatches[index]['title'],
-                style: CustomTheme.h1,
-              ),
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => Messaging(),
-                  ),
-                );
-              },
-            );
+        body: FutureBuilder<List<Map<String, dynamic>>>(
+          future: matches,
+          builder: (BuildContext context, AsyncSnapshot snapshot) {
+            if (snapshot.hasError) {
+              return Text('Error: ${snapshot.error}');
+            } else if (!snapshot.hasData) {
+              return Center(child: CircularProgressIndicator());
+            } else {
+              return ListView.separated(
+                itemCount: snapshot.data.length,
+                separatorBuilder: (BuildContext context, int index) => Divider(
+                  thickness: 2,
+                ),
+                itemBuilder: (BuildContext context, int index) {
+                  final item = snapshot.data[index];
+                  return ListTile(
+                    leading: ImageAvatar(imageUri: item['image']),
+                    title: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          item['title'],
+                          style: CustomTheme.h1,
+                        ),
+                      ],
+                    ),
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => Messaging(),
+                        ),
+                      );
+                    },
+                  );
+                },
+              );
+            }
           },
         ),
       ),

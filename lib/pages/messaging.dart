@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:perfect_flatmate/services/chats.dart';
 
 class Messaging extends StatefulWidget {
   const Messaging({super.key});
@@ -29,6 +30,9 @@ class _MessagingState extends State<Messaging> {
 
   @override
   Widget build(BuildContext context) {
+    //MessageHelper.getAllMessages();
+    //log(messages.toString());
+    //debugPrint(messages);
     return Container(
         child: Scaffold(
       appBar: AppBar(
