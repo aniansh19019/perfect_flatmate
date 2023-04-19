@@ -28,7 +28,7 @@ class _LikesState extends State<Likes> {
   Widget build(BuildContext context) {
     
     return Scaffold(
-      appBar: AppBar(title: Text("Likes")),
+      appBar: AppBar(centerTitle: true, title: Text("Likes")),
       body: Container(
       child: SwipeView(swipeItemsFuture: swipeItemsFuture!,)
     ),
