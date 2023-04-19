@@ -30,6 +30,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       
       theme: ThemeData(
+        // inputDecorationTheme: ,
         elevatedButtonTheme: ElevatedButtonThemeData(
           style: ButtonStyle(
             shape: MaterialStateProperty.all<RoundedRectangleBorder>(

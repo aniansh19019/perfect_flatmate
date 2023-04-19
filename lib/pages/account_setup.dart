@@ -1,4 +1,10 @@
+import 'dart:io';
+
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:perfect_flatmate/util/theme.dart';
+import 'package:perfect_flatmate/widgets/forms.dart';
+import '../services/auth.dart';
 import '../services/data.dart';
 
 import '../services/storage.dart';
@@ -14,8 +20,13 @@ class _AccountSetupState extends State<AccountSetup> {
   TextEditingController _ageController = TextEditingController();
   TextEditingController _emailController = TextEditingController();
   TextEditingController _dobController = TextEditingController();
+  TextEditingController _cityController = TextEditingController();
+  TextEditingController _phoneController = TextEditingController();
+  TextEditingController _stateController = TextEditingController();
 
   Map<String, dynamic> _newUserDetails = {};
+  String? imagePath;
+  String errorMessage = "";
 
   @override
   void dispose() {
@@ -26,14 +37,30 @@ class _AccountSetupState extends State<AccountSetup> {
     super.dispose();
   }
 
-  void _saveDetails(additionalDetails) {
+  void _saveDetails(additionalDetails) 
+  {
+    
+    if(imagePath != null)
+    {
+      String imageUri = Storage.uploadFile(imagePath!);
+    }
+    else
+    {
+      errorMessage = "Please select an image!";
+      setState(() {
+        
+      });
+      return;
+    }
+    
     _newUserDetails['name'] = _nameController.text;
     _newUserDetails['age'] = int.tryParse(_ageController.text);
-    _newUserDetails['email'] = _emailController.text;
+    _newUserDetails['email'] = Auth.getCurrentUser();
     _newUserDetails['dob'] = _dobController.text;
     _newUserDetails.addAll(additionalDetails);
     print(_newUserDetails); // Print the details for debugging purposes
     DataHelper.addUser(_newUserDetails, context);
+
     Navigator.of(context).pushNamedAndRemoveUntil("/home", (route) => false);
   }
 
@@ -52,49 +79,82 @@ class _AccountSetupState extends State<AccountSetup> {
       appBar: AppBar(
         title: Text('New User Details'),
       ),
-      body: Padding(
-        padding: EdgeInsets.all(16.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            TextField(
-              controller: _nameController,
-              decoration: InputDecoration(
-                hintText: 'Name',
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(14, 0, 14, 0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SizedBox(height: 12,),
+              Center(child: ElevatedButton(
+                style: ButtonStyle(
+                                  shape: MaterialStateProperty.all(CircleBorder()),
+                                  // backgroundColor: MaterialStateProperty.all(Colors.white)
+                                ),
+                onPressed: ()async
+                {
+                  FilePickerResult? result = await FilePicker.platform.pickFiles();
+                
+                  if (result != null) 
+                  {
+                    // File file = File(result.files.single.path!);
+                    
+                    setState(() {
+                      imagePath = result.files.single.path!;
+                    });
+                    // Storage.uploadFile(filePath)
+                  } 
+                  else 
+                  {
+                    // User canceled the picker
+                  }
+                }, child: Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: Icon(
+                    Icons.image_outlined,
+                    size: 60,
+                    ),
+                ))),
+              SizedBox(height: 12,),
+              Center(child: Text(errorMessage, style: CustomTheme.error,),),
+              Center(child: Text((imagePath == null)?"Select Image":"Image selected:$imagePath", style: CustomTheme.body,)),
+              SizedBox(height: 16,),
+              EasyFormField(
+                label: "Name",
+                textEditingController: _nameController,
+                required: true,
               ),
-            ),
-            SizedBox(height: 16.0),
-            TextField(
-              controller: _ageController,
-              keyboardType: TextInputType.number,
-              decoration: InputDecoration(
-                hintText: 'Age',
+             
+              SizedBox(height: 16.0),
+              EasyFormField(
+                label: 'Date of Birth (dd/mm/yyyy)',
+                textEditingController: _dobController,
               ),
-            ),
-            SizedBox(height: 16.0),
-            TextField(
-              controller: _emailController,
-              keyboardType: TextInputType.emailAddress,
-              decoration: InputDecoration(
-                hintText: 'Email',
+              SizedBox(height: 16.0),
+              EasyFormField(
+                label: "Phone",
+                textEditingController: _phoneController,
               ),
-            ),
-            SizedBox(height: 16.0),
-            TextField(
-              controller: _dobController,
-              decoration: InputDecoration(
-                hintText: 'Date of Birth (dd/mm/yyyy)',
+              SizedBox(height: 16.0),
+              EasyFormField(
+                label: "State",
+                textEditingController: _stateController,
               ),
-            ),
-            SizedBox(height: 32.0),
-            ElevatedButton(
-              onPressed: () {
-                _navigateToAdditionalDetails();
-              },
-              child: Text('Next'),
-            ),
-          ],
+              SizedBox(height: 16.0),
+              EasyFormField(
+                label: "City",
+                textEditingController: _cityController,
+              ),
+              
+              ElevatedButton(
+                onPressed: () {
+                  _navigateToAdditionalDetails();
+                },
+                child: Text('Next'),
+              ),
+            ],
+          ),
         ),
       ),
     );

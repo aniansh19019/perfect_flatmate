@@ -48,7 +48,7 @@ class DataHelper
     return docs;
   }
 
-  static Future<dynamic> getUserDataFromEmail(String email)async
+  static Future<QuerySnapshot?> getUserDataFromEmail(String email)async
   {
     return await getUserDataFromField('email', email);
   }
@@ -67,8 +67,18 @@ class DataHelper
   static Future<dynamic> submitLike(String email)async
   {
     // TODO error handling
-    var otherRecord = (await getUserDataFromEmail(email)).docs[0];
-    var selfRecord = (await getUserDataFromEmail(Auth.getCurrentUser()!)).docs[0];
+    var otherRecord = (await getUserDataFromEmail(email))?.docs[0];
+    var selfRecord = (await getUserDataFromEmail(Auth.getCurrentUser()!))?.docs[0];
+    if(otherRecord == null)
+    {
+      debugPrint("Error getting other Record!");
+      return;
+    }
+    if(selfRecord == null)
+    {
+      debugPrint("Error getting self Record!");
+      return;
+    }
     // check if it is match
     List selfLikes = selfRecord.get('likes');
     List otherLikes = otherRecord.get('likes');
