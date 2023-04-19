@@ -5,6 +5,7 @@ import 'package:perfect_flatmate/pages/messaging.dart';
 import 'package:perfect_flatmate/util/theme.dart';
 import 'package:perfect_flatmate/widgets/image_avatar.dart';
 import '../services/data.dart';
+import 'package:perfect_flatmate/services/auth.dart';
 
 class Matches extends StatefulWidget {
   const Matches({super.key});
@@ -15,10 +16,13 @@ class Matches extends StatefulWidget {
 
 class _MatchesState extends State<Matches> {
   Future<List<Map<String, dynamic>>>? matches;
+
+  String? currentUser;
   @override
   void initState() {
     // TODO: implement initState
     matches = DataHelper.getMatches();
+    currentUser = Auth.getCurrentUser();
 
     super.initState();
   }
