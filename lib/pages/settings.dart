@@ -25,6 +25,7 @@ class _SettingsState extends State<Settings> {
   dynamic data= DataHelper.getUserDataFromEmail(Auth.getCurrentUser()!);
   
   @override
+
   Widget build(BuildContext context) { 
 
   
@@ -112,6 +113,7 @@ class _SettingsState extends State<Settings> {
       )
       
     )
+
     );
   }
 }

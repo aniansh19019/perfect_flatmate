@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:perfect_flatmate/services/auth.dart';
 import 'package:perfect_flatmate/util/data_model.dart';
 import 'package:perfect_flatmate/util/swipe_item_builder.dart';
+import 'package:perfect_flatmate/widgets/dialog_box.dart';
 import 'package:swipe_cards/swipe_cards.dart';
 
 // TODO error handling in updates
@@ -27,23 +28,22 @@ class DataHelper {
     return "";
   }
 
-  static Future<QuerySnapshot?> getUserDataFromField(String field, String value) async
-  {
+  static Future<QuerySnapshot?> getUserDataFromField(
+      String field, String value) async {
     QuerySnapshot<Map<String, dynamic>> docs;
 
-    try
-    {
-      docs = await FirebaseFirestore.instance.collection('users').where(field, isEqualTo: value).get();
-    }
-    catch(error)
-    {
+    try {
+      docs = await FirebaseFirestore.instance
+          .collection('users')
+          .where(field, isEqualTo: value)
+          .get();
+    } catch (error) {
       debugPrint(error.toString());
       // return "Error getting user data from $field!";
       return null;
     }
 
-    if(docs.size == 0)
-    {
+    if (docs.size == 0) {
       return null;
     }
     return docs;
@@ -53,7 +53,7 @@ class DataHelper {
     return await getUserDataFromField('email', email);
   }
 
-  static Future<List<SwipeItem>?> getListings() async {
+  static Future<List<SwipeItem>?> getListings(context) async {
     QuerySnapshot<Map<String, dynamic>> docs;
 
     try {
@@ -79,11 +79,11 @@ class DataHelper {
       
     }
 
-    var swipeItems = SwipeItemBuilder.userListToSwipeItems(finalDocs);
+    var swipeItems = SwipeItemBuilder.userListToSwipeItems(finalDocs, context);
     return swipeItems;
   }
 
-  static Future<List<SwipeItem>> getLikes() async {
+  static Future<List<SwipeItem>> getLikes(context) async {
     // TODO: error handling
     List<dynamic> userList = List.empty(growable: true);
     var userRecord =
@@ -93,8 +93,29 @@ class DataHelper {
       var otherRecord = (await getUserDataFromEmail(like))!.docs[0];
       userList.add(otherRecord);
     }
-    var swipeItems = SwipeItemBuilder.userListToSwipeItems(userList);
+    var swipeItems = SwipeItemBuilder.userListToSwipeItems(userList, context);
     return swipeItems;
+  }
+
+
+  static Future<List<Map<String, dynamic>>> getMatches() async {
+    // TODO: error handling
+    List<Map<String, dynamic>> userList = List.empty(growable: true);
+    var userRecord =
+        (await getUserDataFromEmail(Auth.getCurrentUser()!))!.docs[0];
+    var userMatches = userRecord.get('matches');
+    for (var user in userMatches) {
+      var userRecord = (await getUserDataFromEmail(user))!.docs[0];
+
+      Map<String, dynamic> myMap = {
+        'title': userRecord.get('name'),
+        'image': userRecord.get('image'),
+        'email': user,
+      };
+
+      userList.add(myMap);
+    }
+    return userList;
   }
 
   static Future<dynamic> submitDislike(String email) async {
@@ -111,8 +132,7 @@ class DataHelper {
       debugPrint("Error getting other Record!");
       return;
     }
-    if(selfRecord == null)
-    {
+    if (selfRecord == null) {
       debugPrint("Error getting self Record!");
       return;
     }
@@ -144,7 +164,7 @@ class DataHelper {
 
   }
 
-  static Future<dynamic> submitLike(String email) async {
+  static Future<dynamic> submitLike(String email, dynamic context) async {
     // TODO error handling
     var otherRecord = (await getUserDataFromEmail(email))?.docs[0];
     var selfRecord =
@@ -175,11 +195,15 @@ class DataHelper {
     List otherMatches = otherRecord.get('matches');
     List selfMatches = selfRecord.get('matches');
 
+
     var selfMyLikes = selfRecord.get('my_likes');
     var otherMyLikes = otherRecord.get('my_likes');
 
     var selfMyDislikes = selfRecord.get('my_dislikes');
     var otherMyDislikes = otherRecord.get('my_dislikes');
+
+    showDialog(context: context, builder: (BuildContext context) => 
+      MatchDialog(userData: otherRecord,));
 
      // add to eachother's matches
     if(didMatch)
@@ -196,6 +220,7 @@ class DataHelper {
         // update other my_likes
         await FirebaseFirestore.instance.collection('users').doc(otherDocId).update({'my_likes': otherMyLikes});
 
+
         // update matches for both
         selfMatches.add(email);
         otherMatches.add(Auth.getCurrentUser());
@@ -211,10 +236,15 @@ class DataHelper {
         debugPrint(error.toString());
         return "Error liking";
       }
-    } else {
+
+      
+    } 
+    
+    else {
       try {
         // update likes for the other person
         otherLikes.add(Auth.getCurrentUser());
+
         await FirebaseFirestore.instance.collection('users').doc(otherDocId).update({'likes': otherLikes});
         // update my_likes for self
         selfMyLikes.add(email);
@@ -229,6 +259,14 @@ class DataHelper {
     }
 
     return "";
+  }
+
+  static Future<Map<String, dynamic>> getUserPreferences() async {
+    var userRecord =
+        (await getUserDataFromEmail(Auth.getCurrentUser()!))!.docs[0];
+    Map<String, dynamic> userPreferences = userRecord.get('preferences');
+
+    return userPreferences;
   }
 
   static Future emailExists(String email) async {
@@ -284,6 +322,7 @@ class DataHelper {
     return "";
   }
 
+
   static updateUserPreferences(
       Map<String, dynamic> map, String currentUser) async {
     var selfRecord =
@@ -294,7 +333,6 @@ class DataHelper {
     }
     var selfDocId = selfRecord!.reference.id;
     try {
-      
       await FirebaseFirestore.instance
           .collection('users')
           .doc(selfDocId)
@@ -304,6 +342,7 @@ class DataHelper {
       return "Error updating preferences";
     }
   }
+
 
   static updateUserProfile(Map<String, dynamic> map) async {
     var selfRecord =
@@ -326,6 +365,7 @@ class DataHelper {
       return "Error updating preferences";
     }
   }
+
 
 
 }
