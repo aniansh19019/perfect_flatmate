@@ -30,6 +30,32 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
+        chipTheme: ChipThemeData(
+          backgroundColor: Colors.white,
+          disabledColor: Colors.grey[400],
+          selectedColor: CustomTheme.primaryPink,
+          secondarySelectedColor: CustomTheme.primaryPink,
+          labelPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+          padding: EdgeInsets.all(4),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(30),
+            side: BorderSide(
+              color: CustomTheme.primaryPink,
+              width: 1,
+            ),
+          ),
+          labelStyle: TextStyle(
+            color: Colors.black,
+            fontSize: 16,
+            fontWeight: FontWeight.w500,
+          ),
+          secondaryLabelStyle: TextStyle(
+            color: Colors.white,
+            fontSize: 16,
+            fontWeight: FontWeight.w500,
+          ),
+          brightness: Brightness.light,
+        ),
         appBarTheme: AppBarTheme(
           backgroundColor: Colors.white,
           elevation: 0,
@@ -41,6 +67,7 @@ class MyApp extends StatelessWidget {
                 GoogleFonts.nunito(fontWeight: FontWeight.bold).fontFamily,
           ),
         ),
+
         // inputDecorationTheme: ,
         elevatedButtonTheme: ElevatedButtonThemeData(
             style: ButtonStyle(

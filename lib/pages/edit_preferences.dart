@@ -391,7 +391,7 @@ class _EditPreferencesState extends State<EditPreferences> {
                   ),
                   ElevatedButton(
                     onPressed: () async {
-                      // Save preferences to Firebase
+                      
 
                       await DataHelper.updateUserPreferences({
                         'min_age': _ageRangeValues.start.round(),
