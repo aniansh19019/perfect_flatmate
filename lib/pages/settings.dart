@@ -21,7 +21,7 @@ class _SettingsState extends State<Settings> {
           ElevatedButton(
             child: Text("Edit"),
             onPressed: () => Navigator.of(context)
-                .pushNamedAndRemoveUntil("/edit", (route) => false),
+                .pushNamed("/edit"),
           ),
           SizedBox(height: 16),
           ElevatedButton(

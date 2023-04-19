@@ -22,8 +22,13 @@ class _EditPreferencesState extends State<EditPreferences> {
   TextEditingController _cityController = TextEditingController();
   TextEditingController _stateController = TextEditingController();
 
-  dynamic preferences =
-      DataHelper.getUserDataFromField('email', Auth.getCurrentUser()!);
+  dynamic preferences;
+  @override
+  void initState() {
+    preferences =
+        DataHelper.getUserDataFromField('email', Auth.getCurrentUser()!);
+    super.initState();
+  }
 
   @override
   void dispose() {
@@ -81,9 +86,13 @@ class _EditPreferencesState extends State<EditPreferences> {
                       _ageRangeValues.end.round().toString(),
                     ),
                     onChanged: (RangeValues values) {
+                      print("values");
+                      print(values);
                       setState(() {
                         _ageRangeValues = values;
                       });
+                      print("_ageRangeValues");
+                      print(_ageRangeValues);
                     },
                   ),
                   TextField(
