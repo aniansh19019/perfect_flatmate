@@ -44,7 +44,7 @@ class _EditPreferencesState extends State<EditPreferences> {
         title: Text('Edit Preferences'),
       ),
       body: SingleChildScrollView(
-        padding: EdgeInsets.all(16.0),
+        padding: EdgeInsets.all(18),
         child: FutureBuilder(
             future: preferences,
             builder: (BuildContext context,
@@ -73,7 +73,10 @@ class _EditPreferencesState extends State<EditPreferences> {
                 children: [
                   Text(
                     'Age Range:',
-                    style: TextStyle(fontSize: 18.0),
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                   SizedBox(height: 8.0),
                   RangeSlider(
@@ -86,13 +89,9 @@ class _EditPreferencesState extends State<EditPreferences> {
                       _ageRangeValues.end.round().toString(),
                     ),
                     onChanged: (RangeValues values) {
-                      print("values");
-                      print(values);
                       setState(() {
                         _ageRangeValues = values;
                       });
-                      print("_ageRangeValues");
-                      print(_ageRangeValues);
                     },
                   ),
                   TextField(
@@ -101,18 +100,18 @@ class _EditPreferencesState extends State<EditPreferences> {
                       hintText: 'City',
                     ),
                   ),
-                  SizedBox(height: 16.0),
+                  SizedBox(height: 18),
                   TextField(
                     controller: _stateController,
                     decoration: InputDecoration(
                       hintText: 'State',
                     ),
                   ),
-                  SizedBox(height: 16.0),
+                  SizedBox(height: 18),
                   Text(
                     'Flatmate should already have a place:',
                     style: TextStyle(
-                      fontSize: 16.0,
+                      fontSize: 18,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
@@ -140,11 +139,11 @@ class _EditPreferencesState extends State<EditPreferences> {
                       ),
                     ],
                   ),
-                  SizedBox(height: 16.0),
+                  SizedBox(height: 18),
                   Text(
                     'Gender Preference:',
                     style: TextStyle(
-                      fontSize: 16.0,
+                      fontSize: 18,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
@@ -181,11 +180,11 @@ class _EditPreferencesState extends State<EditPreferences> {
                       ),
                     ],
                   ),
-                  SizedBox(height: 16.0),
+                  SizedBox(height: 18),
                   Text(
                     'Personality Preference:',
                     style: TextStyle(
-                      fontSize: 16.0,
+                      fontSize: 18,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
@@ -213,11 +212,11 @@ class _EditPreferencesState extends State<EditPreferences> {
                       ),
                     ],
                   ),
-                  SizedBox(height: 16.0),
+                  SizedBox(height: 18),
                   Text(
                     'Smoking Allowed:',
                     style: TextStyle(
-                      fontSize: 16.0,
+                      fontSize: 18,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
@@ -245,11 +244,11 @@ class _EditPreferencesState extends State<EditPreferences> {
                       ),
                     ],
                   ),
-                  SizedBox(height: 16.0),
+                  SizedBox(height: 18),
                   Text(
                     'Drinking Preferences:',
                     style: TextStyle(
-                      fontSize: 16.0,
+                      fontSize: 18,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
@@ -280,7 +279,7 @@ class _EditPreferencesState extends State<EditPreferences> {
                   Text(
                     'Pets Preferences:',
                     style: TextStyle(
-                      fontSize: 16.0,
+                      fontSize: 18,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
@@ -308,11 +307,11 @@ class _EditPreferencesState extends State<EditPreferences> {
                       ),
                     ],
                   ),
-                  SizedBox(height: 16.0),
+                  SizedBox(height: 18),
                   Text(
                     'Employment Preference:',
                     style: TextStyle(
-                      fontSize: 16.0,
+                      fontSize: 18,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
@@ -352,7 +351,7 @@ class _EditPreferencesState extends State<EditPreferences> {
                   Text(
                     'Dietary Preference:',
                     style: TextStyle(
-                      fontSize: 16.0,
+                      fontSize: 18,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
@@ -389,10 +388,9 @@ class _EditPreferencesState extends State<EditPreferences> {
                       ),
                     ],
                   ),
-                  ElevatedButton(
+                  Center(
+                      child: (ElevatedButton(
                     onPressed: () async {
-                      
-
                       await DataHelper.updateUserPreferences({
                         'min_age': _ageRangeValues.start.round(),
                         'max_age': _ageRangeValues.end.round(),
@@ -412,7 +410,7 @@ class _EditPreferencesState extends State<EditPreferences> {
                           .pushNamedAndRemoveUntil("/home", (route) => false);
                     },
                     child: Text('Save'),
-                  ),
+                  ))),
                 ],
               );
             }),
