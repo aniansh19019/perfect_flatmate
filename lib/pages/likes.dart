@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:swipe_cards/swipe_cards.dart';
 
 import '../services/auth.dart';
+import '../services/data.dart';
+import '../widgets/swipe_view.dart';
 
 class Likes extends StatefulWidget {
   const Likes({super.key});
@@ -12,16 +15,13 @@ class Likes extends StatefulWidget {
 }
 
 class _LikesState extends State<Likes> {
+  Future<List<SwipeItem>?>? swipeItemsFuture;
+
   @override
   Widget build(BuildContext context) {
+    swipeItemsFuture = DataHelper.getLikes();
     return Container(
-      child: Column(children: [
-        Text("Likes"),
-        ElevatedButton(onPressed: (){
-          Auth.logout(context);
-        }, child: Text("Show Likes"))
-
-      ]),
+      child: SwipeView(swipeItemsFuture: swipeItemsFuture!,)
     );
   }
 }
