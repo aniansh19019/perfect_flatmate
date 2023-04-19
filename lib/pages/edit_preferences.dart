@@ -22,9 +22,8 @@ class _EditPreferencesState extends State<EditPreferences> {
   TextEditingController _cityController = TextEditingController();
   TextEditingController _stateController = TextEditingController();
 
-  Future<QuerySnapshot<Object>> preferences = DataHelper.getUserDataFromField(
-          'preferences', Auth.getCurrentUser() as String)
-      as Future<QuerySnapshot<Object>>;
+  dynamic preferences = DataHelper.getUserDataFromField(
+          'preferences', Auth.getCurrentUser()!);
   @override
   void dispose() {
     _cityController.dispose();
@@ -40,10 +39,10 @@ class _EditPreferencesState extends State<EditPreferences> {
       ),
       body: SingleChildScrollView(
         padding: EdgeInsets.all(16.0),
-        child: FutureBuilder<QuerySnapshot<Object?>>(
+        child: FutureBuilder(
             future: preferences,
             builder: (BuildContext context,
-                AsyncSnapshot<QuerySnapshot<Object?>> snapshot) {
+                AsyncSnapshot<QuerySnapshot<Object?>?> snapshot) {
               if (snapshot.connectionState == ConnectionState.done) {
                 if (snapshot.hasData && snapshot.data != null) {
                   final data =
