@@ -27,7 +27,8 @@ class Auth {
       }
     }
     // login(email, password, true, context);
-    Navigator.of(context).pushNamed("/login/account_setup", arguments: {"email": email, "password": password});
+    Navigator.of(context).pushNamed("/login/account_setup",
+        arguments: {"email": email, "password": password});
   }
 
   static bool isUserLogin() {
