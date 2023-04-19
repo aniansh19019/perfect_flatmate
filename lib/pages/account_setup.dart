@@ -59,7 +59,7 @@ class _AccountSetupState extends State<AccountSetup> {
       setState(() {});
       return;
     }
-  
+
     _newUserDetails['name'] = _nameController.text;
 
     _newUserDetails['email'] = email;
@@ -80,13 +80,12 @@ class _AccountSetupState extends State<AccountSetup> {
     _newUserDetails['likes'] = List.empty();
     _newUserDetails['dislikes'] = List.empty();
     _newUserDetails['matches'] = List.empty();
-
+    _newUserDetails['preferences'] = {};
     _newUserDetails.addAll(additionalDetails);
 
     DataHelper.addUser(_newUserDetails, context);
-    Auth.login(email, password, false, context);
+    Auth.login(email, password, true, context);
     //Navigator.of(context).pushNamedAndRemoveUntil("/home", (route) => false);
-    
 
     Navigator.of(context).pushNamedAndRemoveUntil("/edit", (route) => false);
   }

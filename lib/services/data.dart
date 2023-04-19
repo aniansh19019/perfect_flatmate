@@ -214,7 +214,7 @@ class DataHelper {
   }
 
   static updateUserPreferences(
-      Map<String, Map<String, Object>> map, String currentUser) async {
+      Map<String, dynamic> map, String currentUser) async {
     var selfRecord =
         (await getUserDataFromEmail(Auth.getCurrentUser()!))?.docs[0];
     if (selfRecord == null) {
@@ -223,7 +223,7 @@ class DataHelper {
     }
     var selfDocId = selfRecord!.reference.id;
     try {
-      // update self likes
+      
       await FirebaseFirestore.instance
           .collection('users')
           .doc(selfDocId)
