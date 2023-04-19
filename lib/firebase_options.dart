@@ -69,6 +69,7 @@ class DefaultFirebaseOptions {
     messagingSenderId: '708718855301',
     projectId: 'perfect-flatmates',
     storageBucket: 'perfect-flatmates.appspot.com',
+    androidClientId: '708718855301-tfpp1g784138vu1bu04s6m7q22kdi9iu.apps.googleusercontent.com',
     iosClientId: '708718855301-6hpbpo3il06bu0oieckpnf9n8imgk7st.apps.googleusercontent.com',
     iosBundleId: 'com.example.perfectFlatmate',
   );

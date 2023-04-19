@@ -42,6 +42,7 @@ class _LoginState extends State<Login>
       );
       debugPrint("SignUp Pressed!");
       Auth.signUp(emailController.text, passwordController.text, context);
+      
     }
   }
 
@@ -124,6 +125,21 @@ class _LoginState extends State<Login>
                           child: Text("Sign In")
                           ),
                       ],
+                    ),
+                    SizedBox(height: 16,),
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width*0.6,
+                      child: TextButton(
+                        
+                        onPressed: ()
+                      {
+                        Auth.signInWithGoogle();
+                      }, child: Material(
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0),),
+                        elevation: 4,
+                        child: Image.asset('assets/google.png',
+                        scale: 0.4,),
+                      )),
                     )
                   ]),
                 ),
