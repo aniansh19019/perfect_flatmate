@@ -19,19 +19,14 @@ class _MessagingState extends State<Messaging> {
   final TextEditingController _textEditingController = TextEditingController();
   // widget.otherEmail
   final _firebase = FirebaseFirestore.instance;
-  late final Future<QuerySnapshot<Map<String, dynamic>>> _chatStream;
-  late final Future<QuerySnapshot<Map<String, dynamic>>> _chatStream1;
-  late final Future<QuerySnapshot<Map<String, dynamic>>> _chatStream2;
-  late final Future<QuerySnapshot<Map<String, dynamic>>> _chatStream3;
+  late final Future<List> _chats;
 
   @override
   void initState() {
     // Set up chat stream
-    _chatStream = _firebase
-        .collection('messages')
-        .where('FromID', isEqualTo: widget.otherEmail)
-        .where('toID', isEqualTo: Auth.getCurrentUser())
-        .get();
+    _chats = MessageHelper.getChats(widget.otherEmail);
+    
+    
     // _chatStream2 = _firebase
     //     .collection('messages')
     //     .where('FromID', isEqualTo: Auth.getCurrentUser())
@@ -41,7 +36,9 @@ class _MessagingState extends State<Messaging> {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context) 
+  {
+    
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.otherName),
@@ -49,14 +46,19 @@ class _MessagingState extends State<Messaging> {
       body: Column(
         children: <Widget>[
           Expanded(
-            child: FutureBuilder<QuerySnapshot<Map<String, dynamic>>>(
-              future: _chatStream,
-              builder: (context, snapshot) {
+            child: FutureBuilder(
+              future: _chats,
+              builder: (context, AsyncSnapshot<List> snapshot) {
                 if (!snapshot.hasData) {
-                  return Center(child: CircularProgressIndicator());
+                  return Center(child: CircularProgressIndicator(
+                  ));
+                }
+                if(snapshot.hasError)
+                {
+                  return Center(child: Text(snapshot.error.toString()),);
                 }
 
-                final chatDocs = snapshot.data!.docs;
+                final chatDocs = snapshot.data!;
                 return ListView.builder(
                   reverse: true,
                   itemCount: chatDocs.length,
