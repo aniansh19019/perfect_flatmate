@@ -84,7 +84,7 @@ class TextLabelView extends StatelessWidget
         children: [
           Text(label, style: CustomTheme.body, textAlign: TextAlign.center,),
           const SizedBox(height: 4,),
-          Text(value, style: CustomTheme.h3,)
+          Text(value, style: CustomTheme.h3, textAlign: TextAlign.center,)
         ],
       ),
     );

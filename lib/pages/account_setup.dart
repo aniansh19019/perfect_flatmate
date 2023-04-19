@@ -232,12 +232,13 @@ class _AdditionalDetailsPageState extends State<AdditionalDetailsPage> {
     Map<String, dynamic> additionalDetails = {};
     additionalDetails['has_place'] = has_place;
     additionalDetails['smoking'] = smoking;
-    additionalDetails['hasPet'] = pets;
+    additionalDetails['pets'] = pets;
     additionalDetails['alcohol'] = alcohol;
     additionalDetails['introvert'] = introvert;
     additionalDetails['diet'] = diet;
     additionalDetails['gender'] = gender;
     additionalDetails['employment'] = employment;
+    additionalDetails['about'] = about;
     print(additionalDetails);
     Navigator.of(context).pop(additionalDetails);
   }
