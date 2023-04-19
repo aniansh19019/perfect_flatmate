@@ -6,7 +6,6 @@ import 'package:perfect_flatmate/pages/explore.dart';
 import 'package:perfect_flatmate/pages/likes.dart';
 import 'package:perfect_flatmate/pages/matches.dart';
 import 'package:perfect_flatmate/pages/settings.dart';
- import 'package:perfect_flatmate/pages/edit_profile.dart';
 
 
 import '../services/auth.dart';
@@ -58,7 +57,7 @@ class _HomeState extends State<Home> {
               Likes(),
               Explore(),
               Matches(),
-              Edit_Profile(),
+              Settings(),
             ]),
           ),
         ));
