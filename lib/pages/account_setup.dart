@@ -91,12 +91,10 @@ class _AccountSetupState extends State<AccountSetup> {
   }
 
   void _navigateToAdditionalDetails() async {
-    print("_navigateToAdditionalDetailsss ------------------");
     final additionalDetails =
         await Navigator.of(context).push(MaterialPageRoute(
       builder: (context) => AdditionalDetailsPage(),
     ));
-    print(additionalDetails);
     _saveDetails(additionalDetails);
   }
 
@@ -110,8 +108,8 @@ class _AccountSetupState extends State<AccountSetup> {
         child: Padding(
           padding: const EdgeInsets.fromLTRB(14, 0, 14, 0),
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               SizedBox(
                 height: 12,
@@ -161,29 +159,29 @@ class _AccountSetupState extends State<AccountSetup> {
                 style: CustomTheme.body,
               )),
               SizedBox(
-                height: 16,
+                height: 14,
               ),
               EasyFormField(
                 label: "Name",
                 textEditingController: _nameController,
                 required: true,
               ),
-              SizedBox(height: 16.0),
+              SizedBox(height: 14.0),
               EasyFormField(
                 label: 'Date of Birth (dd/mm/yyyy)',
                 textEditingController: _dobController,
               ),
-              SizedBox(height: 16.0),
+              SizedBox(height: 14.0),
               EasyFormField(
                 label: "Phone",
                 textEditingController: _phoneController,
               ),
-              SizedBox(height: 16.0),
+              SizedBox(height: 14.0),
               EasyFormField(
                 label: "State",
                 textEditingController: _stateController,
               ),
-              SizedBox(height: 16.0),
+              SizedBox(height: 14.0),
               EasyFormField(
                 label: "City",
                 textEditingController: _cityController,
@@ -252,9 +250,9 @@ class _AdditionalDetailsPageState extends State<AdditionalDetailsPage> {
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: EdgeInsets.all(16.0),
+          padding: EdgeInsets.all(14.0),
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
@@ -274,7 +272,7 @@ class _AdditionalDetailsPageState extends State<AdditionalDetailsPage> {
                   hintText: 'Enter summary',
                 ),
               ),
-              SizedBox(height: 16.0),
+              SizedBox(height: 14.0),
               Text(
                 'Do you have a house?',
                 style: TextStyle(fontSize: 18.0),
@@ -292,7 +290,7 @@ class _AdditionalDetailsPageState extends State<AdditionalDetailsPage> {
                     },
                   ),
                   Text('Yes'),
-                  SizedBox(width: 16.0),
+                  SizedBox(width: 14.0),
                   Radio(
                     value: false,
                     groupValue: has_place,
@@ -305,7 +303,7 @@ class _AdditionalDetailsPageState extends State<AdditionalDetailsPage> {
                   Text('No'),
                 ],
               ),
-              SizedBox(height: 16.0),
+              SizedBox(height: 14.0),
               Text(
                 'Are you a smoker?',
                 style: TextStyle(fontSize: 18.0),
@@ -323,7 +321,7 @@ class _AdditionalDetailsPageState extends State<AdditionalDetailsPage> {
                     },
                   ),
                   Text('Yes'),
-                  SizedBox(width: 16.0),
+                  SizedBox(width: 14.0),
                   Radio(
                     value: false,
                     groupValue: smoking,
@@ -336,7 +334,7 @@ class _AdditionalDetailsPageState extends State<AdditionalDetailsPage> {
                   Text('No'),
                 ],
               ),
-              SizedBox(height: 16.0),
+              SizedBox(height: 14.0),
               Text(
                 'Do you drink alcohol?',
                 style: TextStyle(fontSize: 18.0),
@@ -354,7 +352,7 @@ class _AdditionalDetailsPageState extends State<AdditionalDetailsPage> {
                     },
                   ),
                   Text('Yes'),
-                  SizedBox(width: 16.0),
+                  SizedBox(width: 14.0),
                   Radio(
                     value: false,
                     groupValue: alcohol,
@@ -367,7 +365,7 @@ class _AdditionalDetailsPageState extends State<AdditionalDetailsPage> {
                   Text('No'),
                 ],
               ),
-              SizedBox(height: 16.0),
+              SizedBox(height: 14.0),
               Text(
                 'Do you have a pet?',
                 style: TextStyle(fontSize: 18.0),
@@ -385,7 +383,7 @@ class _AdditionalDetailsPageState extends State<AdditionalDetailsPage> {
                     },
                   ),
                   Text('Yes'),
-                  SizedBox(width: 16.0),
+                  SizedBox(width: 14.0),
                   Radio(
                     value: false,
                     groupValue: pets,
@@ -398,7 +396,7 @@ class _AdditionalDetailsPageState extends State<AdditionalDetailsPage> {
                   Text('No'),
                 ],
               ),
-              SizedBox(height: 16.0),
+              SizedBox(height: 14.0),
               Text(
                 'Personality type',
                 style: TextStyle(fontSize: 18.0),
@@ -416,7 +414,7 @@ class _AdditionalDetailsPageState extends State<AdditionalDetailsPage> {
                     },
                   ),
                   Text('Introvert'),
-                  SizedBox(width: 16.0),
+                  SizedBox(width: 14.0),
                   Radio(
                     value: false,
                     groupValue: introvert,
@@ -429,7 +427,7 @@ class _AdditionalDetailsPageState extends State<AdditionalDetailsPage> {
                   Text('Extrovert'),
                 ],
               ),
-              SizedBox(height: 16.0),
+              SizedBox(height: 14.0),
               DropdownButtonFormField<String>(
                 value: diet,
                 items: ['veg', 'non_veg', 'vegan']
@@ -448,7 +446,7 @@ class _AdditionalDetailsPageState extends State<AdditionalDetailsPage> {
                   border: OutlineInputBorder(),
                 ),
               ),
-              SizedBox(height: 16.0),
+              SizedBox(height: 14.0),
               Text(
                 'Gender',
                 style: TextStyle(fontSize: 18.0),
@@ -466,7 +464,7 @@ class _AdditionalDetailsPageState extends State<AdditionalDetailsPage> {
                     },
                   ),
                   Text('Male'),
-                  SizedBox(width: 16.0),
+                  SizedBox(width: 14.0),
                   Radio(
                     value: 'female',
                     groupValue: gender,
@@ -477,7 +475,7 @@ class _AdditionalDetailsPageState extends State<AdditionalDetailsPage> {
                     },
                   ),
                   Text('Female'),
-                  SizedBox(width: 16.0),
+                  SizedBox(width: 14.0),
                   Radio(
                     value: 'other',
                     groupValue: gender,
@@ -490,7 +488,7 @@ class _AdditionalDetailsPageState extends State<AdditionalDetailsPage> {
                   Text('Other'),
                 ],
               ),
-              SizedBox(height: 16.0),
+              SizedBox(height: 14.0),
               Text(
                 'Employment Status',
                 style: TextStyle(fontSize: 18.0),
@@ -508,7 +506,7 @@ class _AdditionalDetailsPageState extends State<AdditionalDetailsPage> {
                     },
                   ),
                   Text('Student'),
-                  SizedBox(width: 16.0),
+                  SizedBox(width: 14.0),
                   Radio(
                     value: 'employed',
                     groupValue: employment,
@@ -531,7 +529,7 @@ class _AdditionalDetailsPageState extends State<AdditionalDetailsPage> {
                   Text('Unmployed'),
                 ],
               ),
-              SizedBox(height: 32.0),
+              SizedBox(height: 20.0),
               ElevatedButton(
                 onPressed: () {
                   _saveDetails();

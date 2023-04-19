@@ -15,7 +15,23 @@ class _SettingsState extends State<Settings> {
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: ElevatedButton(child: Text("Logout"),onPressed: () => Auth.logout(context)),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          ElevatedButton(
+            child: Text("Edit"),
+            onPressed: () => Navigator.of(context)
+                .pushNamed("/edit"),
+          ),
+          SizedBox(height: 16),
+          ElevatedButton(
+            child: Text("Logout"),
+            onPressed: () {
+              Auth.logout(context);
+            },
+          ),
+        ],
+      ),
     );
   }
 }

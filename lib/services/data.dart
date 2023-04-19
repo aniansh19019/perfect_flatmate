@@ -261,6 +261,14 @@ class DataHelper {
     return "";
   }
 
+  static Future<Map<String, dynamic>> getUserPreferences() async {
+    var userRecord =
+        (await getUserDataFromEmail(Auth.getCurrentUser()!))!.docs[0];
+    Map<String, dynamic> userPreferences = userRecord.get('preferences');
+
+    return userPreferences;
+  }
+
   static Future emailExists(String email) async {
     var data = await getUserDataFromEmail(email);
     if (data is String) {
@@ -325,7 +333,6 @@ class DataHelper {
     }
     var selfDocId = selfRecord!.reference.id;
     try {
-      
       await FirebaseFirestore.instance
           .collection('users')
           .doc(selfDocId)
