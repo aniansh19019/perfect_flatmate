@@ -232,7 +232,7 @@ class _AdditionalDetailsPageState extends State<AdditionalDetailsPage> {
     Map<String, dynamic> additionalDetails = {};
     additionalDetails['has_place'] = has_place;
     additionalDetails['smoking'] = smoking;
-    additionalDetails['hasPet'] = pets;
+    additionalDetails['pets'] = pets;
     additionalDetails['alcohol'] = alcohol;
     additionalDetails['introvert'] = introvert;
     additionalDetails['diet'] = diet;
