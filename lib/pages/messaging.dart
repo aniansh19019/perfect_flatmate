@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:perfect_flatmate/services/chats.dart';
+import 'package:perfect_flatmate/services/auth.dart';
 
 class Messaging extends StatefulWidget {
   final String otherEmail;
@@ -14,60 +16,53 @@ class Messaging extends StatefulWidget {
 class _MessagingState extends State<Messaging> {
   final TextEditingController _textEditingController = TextEditingController();
   // widget.otherEmail
-  final List<String> _messages = [
-    'Hello!',
-    'Hi there!',
-    'How are you?',
-    'I\'m doing well, thanks. How about you?',
-    'I\'m good too, thanks for asking.',
-    'Great!'
-  ];
+  final _firebase = FirebaseFirestore.instance;
+  late final Stream<QuerySnapshot<Map<String, dynamic>>> _chatStream;
 
-  void _sendMessage(String message) {
-    setState(() {
-      _messages.add(message);
-      _textEditingController.clear();
-    });
+  @override
+  void initState() {
+    super.initState();
+    // Set up chat stream
+    _chatStream = _firebase
+        .collection('messages')
+        .orderBy('timestamp', descending: true)
+        .snapshots();
   }
 
   @override
   Widget build(BuildContext context) {
-    //MessageHelper.getAllMessages();
-    //log(messages.toString());
-    //debugPrint(messages);
-    return Container(
-        child: Scaffold(
+    return Scaffold(
       appBar: AppBar(
-        title: Text(widget.otherEmail ?? "No parameter passed"),
+        title: Text(widget.otherEmail),
       ),
       body: Column(
-        children: [
+        children: <Widget>[
           Expanded(
-            child: ListView.builder(
-              itemCount: _messages.length,
-              itemBuilder: (BuildContext context, int index) {
-                final message = _messages[index];
-                return Padding(
-                  padding: EdgeInsets.all(8.0),
-                  child: Align(
-                    alignment: message.startsWith('I')
-                        ? Alignment.topLeft
-                        : Alignment.topRight,
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: message.startsWith('I')
-                            ? Colors.grey[300]
-                            : Colors.grey[200],
-                        borderRadius: BorderRadius.circular(8.0),
-                      ),
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-                      child: Text(
-                        message,
-                        style: TextStyle(fontSize: 16.0),
-                      ),
-                    ),
-                  ),
+            child: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
+              stream: _chatStream,
+              builder: (context, snapshot) {
+                if (!snapshot.hasData) {
+                  return Center(child: CircularProgressIndicator());
+                }
+
+                final chatDocs = snapshot.data!.docs;
+                return ListView.builder(
+                  reverse: true,
+                  itemCount: chatDocs.length,
+                  itemBuilder: (context, index) {
+                    final chatDoc = chatDocs[index].data()!;
+                    final isSelf = chatDoc['FromID'] == Auth.getCurrentUser();
+                    return ListTile(
+                      title: Text(chatDoc['content']),
+                      subtitle: Text(chatDoc['timestamp'].toString()),
+                      trailing: isSelf
+                          ? null
+                          : CircleAvatar(
+                              backgroundImage: NetworkImage(
+                                  'https://picsum.photos/64?random=$index'),
+                            ),
+                    );
+                  },
                 );
               },
             ),
@@ -75,30 +70,19 @@ class _MessagingState extends State<Messaging> {
           Container(
             padding: EdgeInsets.symmetric(horizontal: 8.0),
             child: Row(
-              children: [
+              children: <Widget>[
                 Expanded(
                   child: TextField(
                     controller: _textEditingController,
                     decoration: InputDecoration(
-                      hintText: 'Type your message...',
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(20.0),
-                      ),
-                      contentPadding: EdgeInsets.symmetric(horizontal: 16.0),
+                      hintText: 'Enter a message',
                     ),
-                    onSubmitted: (message) {
-                      _sendMessage(message);
-                    },
                   ),
                 ),
-                SizedBox(width: 8.0),
                 IconButton(
                   icon: Icon(Icons.send),
                   onPressed: () {
-                    final message = _textEditingController.text.trim();
-                    if (message.isNotEmpty) {
-                      _sendMessage(message);
-                    }
+                    _sendMessage();
                   },
                 ),
               ],
@@ -106,6 +90,23 @@ class _MessagingState extends State<Messaging> {
           ),
         ],
       ),
-    ));
+    );
+  }
+
+  void _sendMessage() async {
+    if (_textEditingController.text.isEmpty) {
+      return;
+    }
+
+    final chatRef = FirebaseFirestore.instance.collection('messages').doc();
+    final currentUser = Auth.getCurrentUser();
+    await chatRef.set({
+      'content': _textEditingController.text,
+      'FromID': Auth.getCurrentUser(),
+      'ToID': widget.otherEmail,
+      'timestamp': FieldValue.serverTimestamp(),
+    });
+
+    _textEditingController.clear();
   }
 }
