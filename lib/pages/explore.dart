@@ -22,7 +22,7 @@ class _ExploreState extends State<Explore>
   @override
   void initState() {
     // TODO: implement initState
-    swipeItemsFuture = DataHelper.getListings();
+    swipeItemsFuture = DataHelper.getListings(context);
     super.initState();
   }
 

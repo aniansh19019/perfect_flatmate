@@ -9,6 +9,7 @@ import 'package:flutter/rendering.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:perfect_flatmate/util/theme.dart';
 import 'firebase_options.dart';
+import 'package:perfect_flatmate/pages/settings.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -23,7 +24,8 @@ class MyApp extends StatelessWidget {
 
   // This widget is the root of your application.
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context) 
+  {
     // debugPaintSizeEnabled = true;
 
     return MaterialApp(
@@ -57,7 +59,8 @@ class MyApp extends StatelessWidget {
           brightness: Brightness.light,
         ),
         appBarTheme: AppBarTheme(
-          backgroundColor: Colors.white,
+          iconTheme: IconThemeData(color: CustomTheme.primaryPink),
+          backgroundColor: Color.fromARGB(255, 250, 250, 250),
           elevation: 0,
           titleTextStyle: TextStyle(
             fontSize: 38,
@@ -84,6 +87,7 @@ class MyApp extends StatelessWidget {
           labelColor: CustomTheme.primaryPink,
           unselectedLabelColor: Colors.grey,
         ),
+        
         // This is the theme of your application.
         //
         // Try running your application with "flutter run". You'll see the
@@ -93,7 +97,7 @@ class MyApp extends StatelessWidget {
         // or simply save your changes to "hot reload" in a Flutter IDE).
         // Notice that the counter didn't reset back to zero; the application
         // is not restarted.
-        primarySwatch: Colors.pink,
+        primarySwatch: Palette.kToDark,
       ),
       initialRoute: "/",
       routes: {
@@ -102,6 +106,7 @@ class MyApp extends StatelessWidget {
         "/login/account_setup": (context) => AccountSetup(),
         "/home": (context) => Home(),
         "/edit": (context) => EditPreferences(),
+        "/settings": (context) => Settings(),
       },
     );
   }

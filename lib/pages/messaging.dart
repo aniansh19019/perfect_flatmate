@@ -1,9 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:perfect_flatmate/services/chats.dart';
+import 'package:perfect_flatmate/services/auth.dart';
 
 class Messaging extends StatefulWidget {
-  const Messaging({super.key});
+  final String otherEmail;
+  final String otherName;
+  const Messaging(
+      {super.key, required this.otherEmail, required this.otherName});
 
   @override
   State<Messaging> createState() => _MessagingState();
@@ -11,58 +17,68 @@ class Messaging extends StatefulWidget {
 
 class _MessagingState extends State<Messaging> {
   final TextEditingController _textEditingController = TextEditingController();
-  final List<String> _messages = [
-    'Hello!',
-    'Hi there!',
-    'How are you?',
-    'I\'m doing well, thanks. How about you?',
-    'I\'m good too, thanks for asking.',
-    'Great!'
-  ];
+  // widget.otherEmail
+  final _firebase = FirebaseFirestore.instance;
+  late final Future<List> _chats;
 
-  void _sendMessage(String message) {
-    setState(() {
-      _messages.add(message);
-      _textEditingController.clear();
-    });
+  @override
+  void initState() {
+    // Set up chat stream
+    _chats = MessageHelper.getChats(widget.otherEmail);
+    
+    
+    // _chatStream2 = _firebase
+    //     .collection('messages')
+    //     .where('FromID', isEqualTo: Auth.getCurrentUser())
+    //     .get();
+    //_chatStream = await Future.wait([_chatStream1,_chatStream2]);
+    super.initState();
   }
 
   @override
-  Widget build(BuildContext context) {
-    return Container(
-        child: Scaffold(
+  Widget build(BuildContext context) 
+  {
+    
+    return Scaffold(
       appBar: AppBar(
+
+        title: Text(widget.otherName),
         centerTitle: true,
-        title: const Text("Chat"),
+
       ),
       body: Column(
-        children: [
+        children: <Widget>[
           Expanded(
-            child: ListView.builder(
-              itemCount: _messages.length,
-              itemBuilder: (BuildContext context, int index) {
-                final message = _messages[index];
-                return Padding(
-                  padding: EdgeInsets.all(8.0),
-                  child: Align(
-                    alignment: message.startsWith('I')
-                        ? Alignment.topLeft
-                        : Alignment.topRight,
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: message.startsWith('I')
-                            ? Colors.grey[300]
-                            : Colors.grey[200],
-                        borderRadius: BorderRadius.circular(8.0),
-                      ),
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-                      child: Text(
-                        message,
-                        style: TextStyle(fontSize: 16.0),
-                      ),
-                    ),
-                  ),
+            child: FutureBuilder(
+              future: _chats,
+              builder: (context, AsyncSnapshot<List> snapshot) {
+                if (!snapshot.hasData) {
+                  return Center(child: CircularProgressIndicator(
+                  ));
+                }
+                if(snapshot.hasError)
+                {
+                  return Center(child: Text(snapshot.error.toString()),);
+                }
+
+                final chatDocs = snapshot.data!;
+                return ListView.builder(
+                  reverse: true,
+                  itemCount: chatDocs.length,
+                  itemBuilder: (context, index) {
+                    final chatDoc = chatDocs[index].data()!;
+                    final isSelf = chatDoc['FromID'] == Auth.getCurrentUser();
+                    return ListTile(
+                      title: Text(chatDoc['content']),
+                      subtitle: Text(chatDoc['timestamp'].toString()),
+                      trailing: isSelf
+                          ? null
+                          : CircleAvatar(
+                              backgroundImage: NetworkImage(
+                                  'https://picsum.photos/64?random=$index'),
+                            ),
+                    );
+                  },
                 );
               },
             ),
@@ -70,30 +86,19 @@ class _MessagingState extends State<Messaging> {
           Container(
             padding: EdgeInsets.symmetric(horizontal: 8.0),
             child: Row(
-              children: [
+              children: <Widget>[
                 Expanded(
                   child: TextField(
                     controller: _textEditingController,
                     decoration: InputDecoration(
-                      hintText: 'Type your message...',
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(20.0),
-                      ),
-                      contentPadding: EdgeInsets.symmetric(horizontal: 16.0),
+                      hintText: 'Enter a message',
                     ),
-                    onSubmitted: (message) {
-                      _sendMessage(message);
-                    },
                   ),
                 ),
-                SizedBox(width: 8.0),
                 IconButton(
                   icon: Icon(Icons.send),
                   onPressed: () {
-                    final message = _textEditingController.text.trim();
-                    if (message.isNotEmpty) {
-                      _sendMessage(message);
-                    }
+                    _sendMessage();
                   },
                 ),
               ],
@@ -101,6 +106,23 @@ class _MessagingState extends State<Messaging> {
           ),
         ],
       ),
-    ));
+    );
+  }
+
+  void _sendMessage() async {
+    if (_textEditingController.text.isEmpty) {
+      return;
+    }
+
+    final chatRef = FirebaseFirestore.instance.collection('messages').doc();
+    final currentUser = Auth.getCurrentUser();
+    await chatRef.set({
+      'content': _textEditingController.text,
+      'FromID': Auth.getCurrentUser(),
+      'ToID': widget.otherEmail,
+      'timestamp': FieldValue.serverTimestamp(),
+    });
+
+    _textEditingController.clear();
   }
 }
