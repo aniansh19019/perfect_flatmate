@@ -23,6 +23,22 @@ class _SwipeViewState extends State<SwipeView>
   MatchEngine? matchEngine;
   bool listView = false;
 
+
+  void switchToListView()
+  {
+    setState(() {
+      listView = true;
+      // var swipeItems = matchEng
+    });
+  }
+
+  void switchToSwipeView(int index)
+  {
+    setState(() {
+      listView = false;
+    });
+  }
+
   @override
   Widget build(BuildContext context) 
   {
@@ -39,7 +55,7 @@ class _SwipeViewState extends State<SwipeView>
               children: [
                 Visibility(
                   visible: listView,
-                  child: MainListView(swipeItems: swipeItems)),
+                  child: MainListView(swipeItems: swipeItems, viewToggleCallback: switchToSwipeView,)),
                 Visibility(
                   visible: !listView,
                   child: Center(
@@ -54,36 +70,32 @@ class _SwipeViewState extends State<SwipeView>
                 ),
                 Visibility(
                   visible: !listView,
-                  child: GestureDetector(
-                    // ondo
-                    
-                    child: SwipeCards(
-                      upSwipeAllowed: false,
-                    matchEngine: matchEngine!,
-                    onStackFinished: () 
-                    {
-                      // isStackEmpty
-                    },
-                    likeTag: Container(
-                      padding: EdgeInsets.all(10),
-                      child: Icon(
-                        Icons.favorite, 
-                        color: Colors.pinkAccent.withAlpha(128),
-                        size: 160,
-                        )),
-                    nopeTag: Container(
-                      padding: EdgeInsets.all(10),
-                      child: Icon(
-                        Icons.cancel_rounded, 
-                        color: Colors.black.withAlpha(128),
-                        size: 160,
-                        )),
-                    itemBuilder: (context, index) 
-                    {
-                      var userData = swipeItems[index].content;
-                      return Center(child: SwipeCardWidget(userData: userData,));
-                    },
-                    ),
+                  child: SwipeCards(
+                    upSwipeAllowed: false,
+                  matchEngine: matchEngine!,
+                  onStackFinished: () 
+                  {
+                    // isStackEmpty
+                  },
+                  likeTag: Container(
+                    padding: EdgeInsets.all(10),
+                    child: Icon(
+                      Icons.favorite, 
+                      color: Colors.pinkAccent.withAlpha(128),
+                      size: 160,
+                      )),
+                  nopeTag: Container(
+                    padding: EdgeInsets.all(10),
+                    child: Icon(
+                      Icons.cancel_rounded, 
+                      color: Colors.black.withAlpha(128),
+                      size: 160,
+                      )),
+                  itemBuilder: (context, index) 
+                  {
+                    var userData = swipeItems[index].content;
+                    return Center(child: SwipeCardWidget(userData: userData,));
+                  },
                   ),
                 ),
                 Visibility(
@@ -130,6 +142,36 @@ class _SwipeViewState extends State<SwipeView>
                     ),
                   ),
                 ),
+                Visibility(
+                  visible: !listView,
+                  child: Align(
+                    alignment: Alignment.bottomCenter ,
+                    // widthFactor: 0.2,
+                    child: GestureDetector(
+                      onVerticalDragStart: (details) 
+                      {
+                        debugPrint(details.globalPosition.toString());
+                      },
+                      onVerticalDragUpdate: (details)
+                      {
+                        debugPrint(details.delta.direction.toString());
+                      },
+                      onVerticalDragEnd: (details) 
+                      {
+                        debugPrint(details.primaryVelocity?.sign.toString());
+                        if(details.primaryVelocity!.sign < 0)
+                        {
+                          setState(() {
+                            switchToListView();
+                          });
+                        }
+                      },
+                      child: SizedBox(
+                        width: 60,
+                        child: Divider(thickness: 7, )),
+                    ),
+                  ),
+                )
               ],
             );
           }
