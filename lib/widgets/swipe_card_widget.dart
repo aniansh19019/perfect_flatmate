@@ -1,8 +1,10 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter/widgets.dart';
+import 'package:perfect_flatmate/services/storage.dart';
 import 'package:perfect_flatmate/util/theme.dart';
 import 'package:perfect_flatmate/util/timestamp_to_age.dart';
 
@@ -15,6 +17,7 @@ class SwipeCardWidget extends StatefulWidget
     "vegan" : "Vegan"
   };
   final QueryDocumentSnapshot userData;
+  
   const SwipeCardWidget({super.key, required this.userData});
 
   @override
@@ -31,7 +34,27 @@ class _SwipeCardWidgetState extends State<SwipeCardWidget>
         child: Column(
                 children: [
                   SizedBox(height: 20,),
-                  CircleAvatar(radius: 70,),
+                  FutureBuilder(
+                    future: Storage.getImageCached(widget.userData.get('image')),
+                    builder: (context, snapshot)
+                    {
+                      if (snapshot.hasData)
+                      {
+                        return CircleAvatar(radius: 70, 
+                        backgroundImage: FileImage(snapshot.data!)
+                        );
+                      }
+                      else if(snapshot.hasError)
+                      {
+                        debugPrint(snapshot.error.toString());
+                        return CircleAvatar(radius: 70, child: Icon(Icons.error),);
+                      }
+                      else
+                      {
+                        return CircleAvatar(radius: 70, child: CircularProgressIndicator(),);
+                      }
+                    }),
+                  
                   SizedBox(height: 12,),
                   Text(widget.userData.get("name",), style: CustomTheme.h1,),
                   SizedBox(height: SwipeCardWidget.spacing,),
