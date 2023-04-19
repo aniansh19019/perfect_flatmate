@@ -64,8 +64,10 @@ class _MatchesState extends State<Matches> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) =>
-                              Messaging(otherEmail: item['email']),
+                          builder: (context) => Messaging(
+                            otherEmail: item['email'],
+                            otherName: item['title'],
+                          ),
                         ),
                       );
                     },
