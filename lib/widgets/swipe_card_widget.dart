@@ -7,6 +7,7 @@ import 'package:flutter/widgets.dart';
 import 'package:perfect_flatmate/services/storage.dart';
 import 'package:perfect_flatmate/util/theme.dart';
 import 'package:perfect_flatmate/util/timestamp_to_age.dart';
+import 'package:perfect_flatmate/widgets/image_avatar.dart';
 
 class SwipeCardWidget extends StatefulWidget 
 {
@@ -34,27 +35,7 @@ class _SwipeCardWidgetState extends State<SwipeCardWidget>
         child: Column(
                 children: [
                   SizedBox(height: 20,),
-                  FutureBuilder(
-                    future: Storage.getImageCached(widget.userData.get('image')),
-                    builder: (context, snapshot)
-                    {
-                      if (snapshot.hasData)
-                      {
-                        return CircleAvatar(radius: 70, 
-                        backgroundImage: FileImage(snapshot.data!)
-                        );
-                      }
-                      else if(snapshot.hasError)
-                      {
-                        debugPrint(snapshot.error.toString());
-                        return CircleAvatar(radius: 70, child: Icon(Icons.error),);
-                      }
-                      else
-                      {
-                        return CircleAvatar(radius: 70, child: CircularProgressIndicator(),);
-                      }
-                    }),
-                  
+                  ImageAvatar(imageUri: widget.userData.get('image')),                
                   SizedBox(height: 12,),
                   Text(widget.userData.get("name",), style: CustomTheme.h1,),
                   SizedBox(height: SwipeCardWidget.spacing,),
