@@ -54,6 +54,7 @@ class _SwipeViewState extends State<SwipeView>
             return Stack(
               children: [
                 SwipeCards(
+                  upSwipeAllowed: false,
                 matchEngine: matchEngine!,
                 onStackFinished: () {},
                 likeTag: Container(
@@ -92,7 +93,7 @@ class _SwipeViewState extends State<SwipeView>
                               child: Icon(Icons.cancel, size: 30, color: Color(0xFF8E8E93),),
                             ),
                             onPressed: () {
-                              matchEngine!.currentItem?.nopeAction!();
+                              matchEngine!.currentItem?.nope();
                             },
                             ),
                             SizedBox(width: 20,),
@@ -106,7 +107,7 @@ class _SwipeViewState extends State<SwipeView>
                               child: Icon(Icons.favorite, size: 30, color: Color(0xFFFF375F),),
                             ),
                             onPressed: () {
-                              matchEngine!.currentItem?.likeAction!();
+                              matchEngine!.currentItem?.like();
                             },
                             ),
                         ],
