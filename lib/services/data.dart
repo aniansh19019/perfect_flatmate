@@ -58,9 +58,75 @@ class DataHelper
     
   }
 
+
+  static Future<dynamic> submitDislike(String email)async
+  {
+    // TODO implement
+  }
+
   static Future<dynamic> submitLike(String email)async
   {
+    // TODO error handling
+    var otherRecord = (await getUserDataFromEmail(email)).docs[0];
+    var selfRecord = (await getUserDataFromEmail(Auth.getCurrentUser()!)).docs[0];
+    // check if it is match
+    List selfLikes = selfRecord.get('likes');
+    List otherLikes = otherRecord.get('likes');
+    // check if the email exists in your own likes
+    bool didMatch = false;
+    for(var otherEmail in selfLikes)
+    {
+      if(otherEmail == email)
+      {
+        didMatch = true;
+        break;
+      }
+    }
+   
+    var otherDocId = otherRecord!.reference.id;
+    var selfDocId = selfRecord!.reference.id;
 
+    List otherMatches = otherRecord.get('matches');
+    List selfMatches = selfRecord.get('matches');
+
+     // add to eachother's matches
+    if(didMatch)
+    {
+      // Remove email from self likes
+      selfLikes.remove(email);
+      
+      try
+      {
+        // update self likes
+        await FirebaseFirestore.instance.collection('users').doc(selfDocId).update({'likes': selfLikes});
+        // update matches for both
+        selfMatches.add(email);
+        otherMatches.add(Auth.getCurrentUser());
+        await FirebaseFirestore.instance.collection('users').doc(selfDocId).update({'matches': selfMatches});
+        await FirebaseFirestore.instance.collection('users').doc(otherDocId).update({'matches': otherMatches});
+      }
+      catch(error)
+      {
+        debugPrint(error.toString());
+        return "Error liking";
+      }
+    }
+    else
+    {
+      try
+      {
+        // update likes for the other person
+        otherLikes.add(Auth.getCurrentUser());
+        await FirebaseFirestore.instance.collection('users').doc(otherDocId).update({'likes': otherLikes});
+      }
+      catch(error)
+      {
+        debugPrint(error.toString());
+        return "Error liking";
+      }
+    }
+    
+    return "";
   }
 
 

@@ -1,7 +1,10 @@
+import 'package:perfect_flatmate/services/data.dart';
 import 'package:swipe_cards/swipe_cards.dart';
 
 class SwipeItemBuilder
 {
+  
+
   static List<SwipeItem> userListToSwipeItems(List<dynamic>  userList)
   {
     List<SwipeItem> swipeItems = List.empty(growable: true);
@@ -10,8 +13,14 @@ class SwipeItemBuilder
       swipeItems.add(
         SwipeItem(
           content: userData,
-          likeAction: (){},
-          nopeAction: (){},
+          likeAction: ()
+          {
+            DataHelper.submitLike(userData.get('email'));
+          },
+          nopeAction: ()
+          {
+            DataHelper.submitDislike(userData.get('email'));
+          },
           superlikeAction: (){},
 
         )

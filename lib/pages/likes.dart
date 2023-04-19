@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 
+import '../services/auth.dart';
+
 class Likes extends StatefulWidget {
   const Likes({super.key});
 
@@ -15,7 +17,9 @@ class _LikesState extends State<Likes> {
     return Container(
       child: Column(children: [
         Text("Likes"),
-        ElevatedButton(onPressed: (){}, child: Text("Show Likes"))
+        ElevatedButton(onPressed: (){
+          Auth.logout(context);
+        }, child: Text("Show Likes"))
 
       ]),
     );
