@@ -8,8 +8,10 @@ import 'package:perfect_flatmate/util/theme.dart';
 import 'package:perfect_flatmate/widgets/swipe_card_widget.dart';
 import 'package:swipe_cards/swipe_cards.dart';
 
-class SwipeView extends StatefulWidget {
-  const SwipeView({super.key});
+class SwipeView extends StatefulWidget 
+{
+  final Future<List<SwipeItem>?> swipeItemsFuture;
+  const SwipeView({super.key, required this.swipeItemsFuture});
 
   @override
   State<SwipeView> createState() => _SwipeViewState();
@@ -18,38 +20,18 @@ class SwipeView extends StatefulWidget {
 class _SwipeViewState extends State<SwipeView> 
 {
   MatchEngine? matchEngine;
-  Future<QuerySnapshot?>? queryRef;
-
-
-  void doStuff()async
-  {
-    
-    // debugPrint(queryRef.docs[0].get('name'));
-    // var swipeItems = SwipeItemBuilder.userListToSwipeItems(queryRef.docs);
-    // matchEngine = MatchEngine(swipeItems: swipeItems);
-  }
-
-  @override
-  void initState()
-  {
-    // TODO: implement initState
-    // doStuff();
-    queryRef = DataHelper.getUserDataFromField("city", "Mumbai");
-    
-    super.initState();
-  }
-
+  
   @override
   Widget build(BuildContext context) 
   {
       
       return FutureBuilder(
-        future: queryRef,
-        builder: (context, AsyncSnapshot<QuerySnapshot?> snapshot)
+        future: widget.swipeItemsFuture,
+        builder: (context, AsyncSnapshot<List<SwipeItem>?> snapshot)
         {
           if(snapshot.hasData)
           {
-            var swipeItems = SwipeItemBuilder.userListToSwipeItems(snapshot.data!.docs);
+            var swipeItems = snapshot.data!;
             matchEngine = MatchEngine(swipeItems: swipeItems);
             return Stack(
               children: [
