@@ -92,6 +92,7 @@ class DataHelper {
       Map<String, dynamic> myMap = {
         'title': userRecord.get('name'),
         'image': userRecord.get('image'),
+        'email': user,
       };
 
       userList.add(myMap);

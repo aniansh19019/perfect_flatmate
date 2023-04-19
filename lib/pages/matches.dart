@@ -25,20 +25,6 @@ class _MatchesState extends State<Matches> {
 
   @override
   Widget build(BuildContext context) {
-    final List<Map<String, dynamic>> arrMatches = [
-      {
-        'title': 'Mansi',
-        'image': 'https://picsum.photos/id/1/200/200',
-      },
-      {
-        'title': 'Shanaya',
-        'image': 'https://picsum.photos/id/2/200/200',
-      },
-      {
-        'title': 'Naira',
-        'image': 'https://picsum.photos/id/3/200/200',
-      },
-    ];
     return Container(
       child: Scaffold(
         appBar: AppBar(
@@ -74,7 +60,8 @@ class _MatchesState extends State<Matches> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => Messaging(),
+                          builder: (context) =>
+                              Messaging(otherEmail: item['email']),
                         ),
                       );
                     },
