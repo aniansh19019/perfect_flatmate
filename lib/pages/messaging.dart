@@ -7,7 +7,9 @@ import 'package:perfect_flatmate/services/auth.dart';
 
 class Messaging extends StatefulWidget {
   final String otherEmail;
-  const Messaging({super.key, required this.otherEmail, required});
+  final String otherName;
+  const Messaging(
+      {super.key, required this.otherEmail, required this.otherName});
 
   @override
   State<Messaging> createState() => _MessagingState();
@@ -17,29 +19,38 @@ class _MessagingState extends State<Messaging> {
   final TextEditingController _textEditingController = TextEditingController();
   // widget.otherEmail
   final _firebase = FirebaseFirestore.instance;
-  late final Stream<QuerySnapshot<Map<String, dynamic>>> _chatStream;
+  late final Future<QuerySnapshot<Map<String, dynamic>>> _chatStream;
+  late final Future<QuerySnapshot<Map<String, dynamic>>> _chatStream1;
+  late final Future<QuerySnapshot<Map<String, dynamic>>> _chatStream2;
+  late final Future<QuerySnapshot<Map<String, dynamic>>> _chatStream3;
 
   @override
   void initState() {
-    super.initState();
     // Set up chat stream
     _chatStream = _firebase
         .collection('messages')
-        .orderBy('timestamp', descending: true)
-        .snapshots();
+        .where('FromID', isEqualTo: widget.otherEmail)
+        .where('toID', isEqualTo: Auth.getCurrentUser())
+        .get();
+    // _chatStream2 = _firebase
+    //     .collection('messages')
+    //     .where('FromID', isEqualTo: Auth.getCurrentUser())
+    //     .get();
+    //_chatStream = await Future.wait([_chatStream1,_chatStream2]);
+    super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.otherEmail),
+        title: Text(widget.otherName),
       ),
       body: Column(
         children: <Widget>[
           Expanded(
-            child: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
-              stream: _chatStream,
+            child: FutureBuilder<QuerySnapshot<Map<String, dynamic>>>(
+              future: _chatStream,
               builder: (context, snapshot) {
                 if (!snapshot.hasData) {
                   return Center(child: CircularProgressIndicator());
