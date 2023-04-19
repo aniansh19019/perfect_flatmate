@@ -1,3 +1,5 @@
+// import 'dart:html';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
@@ -31,16 +33,22 @@ class MessageHelper {
 
     while(i < docsOne.length && j < docsTwo.length)
     {
-      var timeOne = docsOne[i].get('timestamp');
-      var timeTwo = docsTwo[j].get('timestamp');
-      if(timeOne > timeTwo)
+      DateTime timeOne = docsOne[i].get('timestamp').toDate();
+      DateTime timeTwo = docsTwo[j].get('timestamp').toDate();
+      if(timeOne.compareTo(timeTwo)>0)
       {
         finalList.add(docsOne[i]);
         i++;
       }
+      else if(timeOne.compareTo(timeTwo)<0)
+      {
+        finalList.add(docsOne[i]);
+        j++;
+      }
       else
       {
         finalList.add(docsOne[i]);
+        i++;
         j++;
       }
     }
