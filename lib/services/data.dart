@@ -10,6 +10,7 @@ import 'package:swipe_cards/swipe_cards.dart';
 
 // TODO error handling in updates
 // TODO firebase security rules
+// TODO handle my_likes, my_dislikes
 // !!! Hide Access Tokens!!!
 class DataHelper
 {
