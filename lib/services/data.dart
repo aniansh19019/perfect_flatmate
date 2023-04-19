@@ -5,6 +5,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:perfect_flatmate/services/auth.dart';
 import 'package:perfect_flatmate/util/data_model.dart';
+import 'package:perfect_flatmate/util/swipe_item_builder.dart';
+import 'package:swipe_cards/swipe_cards.dart';
 
 // TODO error handling in updates
 // TODO firebase security rules
@@ -53,15 +55,33 @@ class DataHelper
     return await getUserDataFromField('email', email);
   }
 
-  static Future<dynamic> getListings()async
+  static Future<List<SwipeItem>> getListings()async
   {
-    
+    var queryRef = await DataHelper.getUserDataFromField("city", "Mumbai");
+    var swipeItems = SwipeItemBuilder.userListToSwipeItems(queryRef!.docs);
+    return swipeItems;
+  }
+
+  static Future<List<SwipeItem>> getLikes()async
+  {
+    // TODO: error handling
+    List<dynamic> userList = List.empty(growable: true);
+    var userRecord = (await getUserDataFromEmail(Auth.getCurrentUser()!))!.docs[0];
+    var userLikes = userRecord.get('likes');
+    for (var like in userLikes)
+    {
+      var otherRecord = (await getUserDataFromEmail(like))!.docs[0];
+      userList.add(otherRecord);
+    }
+    var swipeItems = SwipeItemBuilder.userListToSwipeItems(userList);
+    return swipeItems;
   }
 
 
   static Future<dynamic> submitDislike(String email)async
   {
     // TODO implement
+    // 
   }
 
   static Future<dynamic> submitLike(String email)async
