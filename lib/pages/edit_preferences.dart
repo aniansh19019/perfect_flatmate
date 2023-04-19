@@ -41,6 +41,7 @@ class _EditPreferencesState extends State<EditPreferences> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        centerTitle: true,
         title: Text('Edit Preferences'),
       ),
       body: SingleChildScrollView(
