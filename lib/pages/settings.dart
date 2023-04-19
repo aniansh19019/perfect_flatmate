@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 
+import '../services/auth.dart';
+
 class Settings extends StatefulWidget {
   const Settings({super.key});
 
@@ -12,8 +14,8 @@ class Settings extends StatefulWidget {
 class _SettingsState extends State<Settings> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Text("Settings")
+    return Center(
+      child: ElevatedButton(child: Text("Logout"),onPressed: () => Auth.logout(context)),
     );
   }
 }

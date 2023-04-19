@@ -4,6 +4,7 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter/widgets.dart';
 import 'package:perfect_flatmate/util/theme.dart';
+import 'package:perfect_flatmate/util/timestamp_to_age.dart';
 
 class SwipeCardWidget extends StatefulWidget 
 {
@@ -36,7 +37,7 @@ class _SwipeCardWidgetState extends State<SwipeCardWidget>
                   SizedBox(height: SwipeCardWidget.spacing,),
                   TextLabelView(label: "Location", value: widget.userData.get('city')),
                   SizedBox(height: SwipeCardWidget.spacing,),
-                  TextLabelView(label: "Age", value: widget.userData.get('dob')),
+                  TextLabelView(label: "Age", value: AgeHelper.timestampToAge(widget.userData.get('dob'))),
                   SizedBox(height: SwipeCardWidget.spacing,),
                   TextLabelView(label: "Has Place", value: widget.userData.get('has_place')?"Yes":"No"),
                   SizedBox(height: SwipeCardWidget.spacing,),
