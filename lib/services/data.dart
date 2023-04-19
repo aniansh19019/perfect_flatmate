@@ -70,7 +70,23 @@ class DataHelper
       // return "Error getting user data from $field!";
       return null;
     }
-    var swipeItems = SwipeItemBuilder.userListToSwipeItems(docs.docs);
+
+    List<QueryDocumentSnapshot> finalDocs = List.empty(growable: true);
+    var userRecord = (await getUserDataFromEmail(Auth.getCurrentUser()!))!.docs[0];
+
+    List userMyLikes = userRecord.get('my_likes');
+    List userMyDislikes = userRecord.get('my_dislikes');
+    for (var doc in docs.docs)
+    {
+      var reject = (userMyLikes.contains(doc.get('email')) || userMyDislikes.contains(doc.get('email')));
+      if(!reject)
+      {
+        finalDocs.add(doc);
+      }
+      
+    }
+
+    var swipeItems = SwipeItemBuilder.userListToSwipeItems(finalDocs);
     return swipeItems;
   }
 
@@ -93,7 +109,49 @@ class DataHelper
   static Future<dynamic> submitDislike(String email)async
   {
     // TODO implement
-    // 
+    
+    var otherRecord = (await getUserDataFromEmail(email))?.docs[0];
+    var selfRecord = (await getUserDataFromEmail(Auth.getCurrentUser()!))?.docs[0];
+    
+    var otherDocId = otherRecord!.reference.id;
+    var selfDocId = selfRecord!.reference.id;
+
+    if(otherRecord == null)
+    {
+      debugPrint("Error getting other Record!");
+      return;
+    }
+    if(selfRecord == null)
+    {
+      debugPrint("Error getting self Record!");
+      return;
+    }
+
+    var selfDislikes = selfRecord.get('dislikes');
+    var selfMyDislikes = selfRecord.get('my_dislikes');
+    var otherDislikes = otherRecord.get('dislikes');
+    var otherMyDislikes = otherRecord.get('my_dislikes');
+
+    // update my_dislikes for self
+    selfMyDislikes.add(email);
+    // update dislikes for other
+    otherDislikes.add(Auth.getCurrentUser());
+
+    // Update records
+    try
+      {
+        // update self my_dislikes
+        await FirebaseFirestore.instance.collection('users').doc(selfDocId).update({'my_dislikes': selfMyDislikes});
+        // update dislikes for other
+        await FirebaseFirestore.instance.collection('users').doc(otherDocId).update({'dislikes': otherDislikes});
+
+      }
+      catch(error)
+      {
+        debugPrint(error.toString());
+        return "Error Disliking";
+      }
+
   }
 
   static Future<dynamic> submitLike(String email)async
@@ -131,16 +189,27 @@ class DataHelper
     List otherMatches = otherRecord.get('matches');
     List selfMatches = selfRecord.get('matches');
 
+    var selfMyLikes = selfRecord.get('my_likes');
+    var otherMyLikes = otherRecord.get('my_likes');
+
+    var selfMyDislikes = selfRecord.get('my_dislikes');
+    var otherMyDislikes = otherRecord.get('my_dislikes');
+
      // add to eachother's matches
     if(didMatch)
     {
       // Remove email from self likes
       selfLikes.remove(email);
+      // Remove email from other my_likes
+      otherMyLikes.remove(Auth.getCurrentUser());
       
       try
       {
         // update self likes
         await FirebaseFirestore.instance.collection('users').doc(selfDocId).update({'likes': selfLikes});
+        // update other my_likes
+        await FirebaseFirestore.instance.collection('users').doc(otherDocId).update({'my_likes': otherMyLikes});
+
         // update matches for both
         selfMatches.add(email);
         otherMatches.add(Auth.getCurrentUser());
@@ -160,6 +229,10 @@ class DataHelper
         // update likes for the other person
         otherLikes.add(Auth.getCurrentUser());
         await FirebaseFirestore.instance.collection('users').doc(otherDocId).update({'likes': otherLikes});
+        // update my_likes for self
+        selfMyLikes.add(email);
+        await FirebaseFirestore.instance.collection('users').doc(selfDocId).update({'my_likes': selfMyLikes});
+
       }
       catch(error)
       {

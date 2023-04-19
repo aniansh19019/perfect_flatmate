@@ -9,7 +9,8 @@ import 'package:perfect_flatmate/widgets/swipe_card_widget.dart';
 
 class MainListView extends StatefulWidget {
   final List<dynamic> swipeItems;
-  const MainListView({super.key, required this.swipeItems});
+  final Function viewToggleCallback;
+  const MainListView({super.key, required this.swipeItems, required this.viewToggleCallback});
 
   @override
   State<MainListView> createState() => _MainListViewState();
@@ -55,7 +56,7 @@ class _MainListViewState extends State<MainListView> {
         
           onTap: ()
           {
-        
+            widget.viewToggleCallback(i);
           },
         ),
       );
