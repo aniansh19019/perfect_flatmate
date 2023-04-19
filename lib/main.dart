@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:perfect_flatmate/pages/account_setup.dart';
+import 'package:perfect_flatmate/pages/edit_preferences.dart';
 import 'package:perfect_flatmate/pages/home.dart';
 import 'package:perfect_flatmate/pages/loading.dart';
 import 'package:perfect_flatmate/pages/login.dart';
@@ -12,54 +13,47 @@ import 'firebase_options.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
-  options: DefaultFirebaseOptions.currentPlatform,
-);
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-      // debugPaintSizeEnabled = true;
-      
-      
+    // debugPaintSizeEnabled = true;
+
     return MaterialApp(
-      
       title: 'Flutter Demo',
       debugShowCheckedModeBanner: false,
-      
       theme: ThemeData(
         appBarTheme: AppBarTheme(
           backgroundColor: Color.fromARGB(255, 250, 250, 250),
           elevation: 0,
           titleTextStyle: TextStyle(
-          fontSize: 38,
-          color: CustomTheme.primaryPink,
-          // fontWeight: FontWeight.bold,
-          fontFamily: GoogleFonts.nunito(fontWeight: FontWeight.bold).fontFamily,
-        ),
-           
+            fontSize: 38,
+            color: CustomTheme.primaryPink,
+            // fontWeight: FontWeight.bold,
+            fontFamily:
+                GoogleFonts.nunito(fontWeight: FontWeight.bold).fontFamily,
+          ),
         ),
         // inputDecorationTheme: ,
         elevatedButtonTheme: ElevatedButtonThemeData(
-          style: ButtonStyle(
-            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-      RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(30.0),
-      ),
-    ),
-          )
-        ),
+            style: ButtonStyle(
+          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+            RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(30.0),
+            ),
+          ),
+        )),
         tabBarTheme: TabBarTheme(
           splashFactory: NoSplash.splashFactory,
-          indicator: BoxDecoration(
-            shape: BoxShape.circle,
-            color: Colors.grey[300]
-          ),
+          indicator:
+              BoxDecoration(shape: BoxShape.circle, color: Colors.grey[300]),
           labelColor: CustomTheme.primaryPink,
           unselectedLabelColor: Colors.grey,
         ),
@@ -76,12 +70,12 @@ class MyApp extends StatelessWidget {
       ),
       initialRoute: "/",
       routes: {
-        "/" :(context) => Loading(),
-        "/login" : (context) => Login(),
-        "/login/account_setup" : (context) => AccountSetup(),
-        "/home":(context) => Home()
+        "/": (context) => Loading(),
+        "/login": (context) => Login(),
+        "/login/account_setup": (context) => AccountSetup(),
+        "/home": (context) => Home(),
+        "/edit": (context) => EditPreferences(),
       },
     );
   }
 }
-
