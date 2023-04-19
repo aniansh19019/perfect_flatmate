@@ -18,8 +18,15 @@ class _LikesState extends State<Likes> {
   Future<List<SwipeItem>?>? swipeItemsFuture;
 
   @override
-  Widget build(BuildContext context) {
+  void initState() {
+    // TODO: implement initState
     swipeItemsFuture = DataHelper.getLikes();
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    
     return Scaffold(
       appBar: AppBar(title: Text("Likes")),
       body: Container(
