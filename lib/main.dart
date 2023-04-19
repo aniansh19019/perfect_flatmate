@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:perfect_flatmate/pages/account_setup.dart';
 import 'package:perfect_flatmate/pages/home.dart';
 import 'package:perfect_flatmate/pages/loading.dart';
 import 'package:perfect_flatmate/pages/login.dart';
 import 'package:flutter/rendering.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:perfect_flatmate/util/theme.dart';
 import 'firebase_options.dart';
 
 void main() async {
@@ -26,10 +28,22 @@ class MyApp extends StatelessWidget {
       
       
     return MaterialApp(
+      
       title: 'Flutter Demo',
       debugShowCheckedModeBanner: false,
       
       theme: ThemeData(
+        appBarTheme: AppBarTheme(
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+          titleTextStyle: TextStyle(
+          fontSize: 38,
+          color: CustomTheme.primaryPink,
+          // fontWeight: FontWeight.bold,
+          fontFamily: GoogleFonts.nunito(fontWeight: FontWeight.bold).fontFamily,
+        ),
+           
+        ),
         // inputDecorationTheme: ,
         elevatedButtonTheme: ElevatedButtonThemeData(
           style: ButtonStyle(
@@ -46,7 +60,7 @@ class MyApp extends StatelessWidget {
             shape: BoxShape.circle,
             color: Colors.grey[300]
           ),
-          labelColor: Color(0xFFF65E7E),
+          labelColor: CustomTheme.primaryPink,
           unselectedLabelColor: Colors.grey,
         ),
         // This is the theme of your application.

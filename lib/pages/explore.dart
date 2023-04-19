@@ -20,17 +20,13 @@ class _ExploreState extends State<Explore>
   Future<List<SwipeItem>?>? swipeItemsFuture;
 
   @override
-  void initState() {
-    // TODO: implement initState
-    
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
     swipeItemsFuture = DataHelper.getListings();
-    return Container(
+    return Scaffold(
+      appBar: AppBar(title: Text("Explore")),
+      body: Container(
       child: SwipeView(swipeItemsFuture: swipeItemsFuture!,)
+    ),
     );
   }
 }

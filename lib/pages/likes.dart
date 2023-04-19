@@ -20,8 +20,11 @@ class _LikesState extends State<Likes> {
   @override
   Widget build(BuildContext context) {
     swipeItemsFuture = DataHelper.getLikes();
-    return Container(
+    return Scaffold(
+      appBar: AppBar(title: Text("Likes")),
+      body: Container(
       child: SwipeView(swipeItemsFuture: swipeItemsFuture!,)
+    ),
     );
   }
 }
