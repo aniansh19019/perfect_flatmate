@@ -32,7 +32,8 @@ class _AccountSetupState extends State<AccountSetup> {
   @override
   void didChangeDependencies() {
     // TODO: implement didChangeDependencies
-    Map<String, dynamic> creds = ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
+    Map<String, dynamic> creds =
+        ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
     email = creds['email'];
     password = creds['password'];
     super.didChangeDependencies();
@@ -83,10 +84,11 @@ class _AccountSetupState extends State<AccountSetup> {
     _newUserDetails.addAll(additionalDetails);
 
     DataHelper.addUser(_newUserDetails, context);
-
-    // Navigator.of(context).pushNamedAndRemoveUntil("/home", (route) => false);
-    // 
     Auth.login(email, password, false, context);
+    Navigator.of(context).pushNamedAndRemoveUntil("/home", (route) => false);
+    //
+
+    //Navigator.of(context).pushNamedAndRemoveUntil("/edit", (route) => false);
   }
 
   void _navigateToAdditionalDetails() async {
@@ -238,6 +240,7 @@ class _AdditionalDetailsPageState extends State<AdditionalDetailsPage> {
     additionalDetails['diet'] = diet;
     additionalDetails['gender'] = gender;
     additionalDetails['employment'] = employment;
+    additionalDetails['about'] = about;
     print(additionalDetails);
     Navigator.of(context).pop(additionalDetails);
   }
