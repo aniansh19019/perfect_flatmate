@@ -68,84 +68,86 @@ class _LoginState extends State<Login>
       ),
   
       body: SafeArea(
-        child: Center(
-          child: Container(
-            padding: EdgeInsets.all(16),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-
-                Spacer(flex: 2),
-                // Text("We Event Check In Admin"),
-                Expanded(
-                  flex: 6,
-                  child: Image.asset("assets/logo.png",
-                      scale: 1
-                    ),
-                ),
-               
-                // Spacer(),
-                Spacer(),
-                Form(
-                  key: _formKey,
-                  child: Column(children: [
-                    EasyFormField(label: "Email", textEditingController: emailController, 
-                    validator: CustomValidators.emailValidator, onSubmit: onLoginFormSubmit,
-                    ),
-                    SizedBox(height: 16,),
-                    EasyFormField(label: "Password", textEditingController: passwordController, obscureText: true,
-                    onSubmit: onLoginFormSubmit,
-                    ),
-                    Text(loginErrorMessage, style: CustomTheme.error,),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        ElevatedButton(
-                          style: ButtonStyle(
-                            backgroundColor: MaterialStateProperty.all(Colors.white)
-                          ),
-                          onPressed: ()
-                          {
-                            onSignUpFormSubmit("");
-                          }, 
-                          child: Text("Sign Up", 
-                          style: TextStyle(
-                            color: Palette.kToDark
+        child: SingleChildScrollView(
+          child: Center(
+            child: Container(
+              padding: EdgeInsets.all(16),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+        
+                  Spacer(flex: 2),
+                  // Text("We Event Check In Admin"),
+                  Expanded(
+                    flex: 6,
+                    child: Image.asset("assets/logo.png",
+                        scale: 1
+                      ),
+                  ),
+                 
+                  // Spacer(),
+                  Spacer(),
+                  Form(
+                    key: _formKey,
+                    child: Column(children: [
+                      EasyFormField(label: "Email", textEditingController: emailController, 
+                      validator: CustomValidators.emailValidator, onSubmit: onLoginFormSubmit,
+                      ),
+                      SizedBox(height: 16,),
+                      EasyFormField(label: "Password", textEditingController: passwordController, obscureText: true,
+                      onSubmit: onLoginFormSubmit,
+                      ),
+                      Text(loginErrorMessage, style: CustomTheme.error,),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          ElevatedButton(
+                            style: ButtonStyle(
+                              backgroundColor: MaterialStateProperty.all(Colors.white)
                             ),
-                          )
-                          ),
-                          SizedBox(width: 20,),
+                            onPressed: ()
+                            {
+                              onSignUpFormSubmit("");
+                            }, 
+                            child: Text("Sign Up", 
+                            style: TextStyle(
+                              color: Palette.kToDark
+                              ),
+                            )
+                            ),
+                            SizedBox(width: 20,),
+                            
+                          ElevatedButton(
+                            onPressed: ()
+                            {
+                              onLoginFormSubmit("");
+                            }, 
+                            child: Text("Sign In")
+                            ),
+                        ],
+                      ),
+                      SizedBox(height: 16,),
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width*0.6,
+                        child: TextButton(
                           
-                        ElevatedButton(
                           onPressed: ()
-                          {
-                            onLoginFormSubmit("");
-                          }, 
-                          child: Text("Sign In")
-                          ),
-                      ],
-                    ),
-                    SizedBox(height: 16,),
-                    SizedBox(
-                      width: MediaQuery.of(context).size.width*0.6,
-                      child: TextButton(
-                        
-                        onPressed: ()
-                      {
-                        Auth.signInWithGoogle();
-                      }, child: Material(
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0),),
-                        elevation: 4,
-                        child: Image.asset('assets/google.png',
-                        scale: 0.4,),
-                      )),
-                    )
-                  ]),
-                ),
-                
-                Spacer(flex: 4,)
-              ],
+                        {
+                          Auth.signInWithGoogle();
+                        }, child: Material(
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0),),
+                          elevation: 4,
+                          child: Image.asset('assets/google.png',
+                          scale: 0.4,),
+                        )),
+                      )
+                    ]),
+                  ),
+                  
+                  Spacer(flex: 4,)
+                ],
+              ),
             ),
           ),
         ),
