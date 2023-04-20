@@ -5,6 +5,7 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:perfect_flatmate/services/chats.dart';
 import 'package:perfect_flatmate/services/auth.dart';
 import 'package:perfect_flatmate/util/theme.dart';
+import 'package:intl/intl.dart';
 
 class Messaging extends StatefulWidget {
   final String otherEmail;
@@ -89,7 +90,8 @@ class _MessagingState extends State<Messaging> {
                             ),
                             SizedBox(height: 4),
                             Text(
-                              chatDoc['timestamp'].toDate().toString(),
+                              DateFormat('hh:mm')
+                                  .format(chatDoc['timestamp'].toDate()),
                               style: TextStyle(
                                 color: isSelf ? Colors.white70 : Colors.black45,
                                 fontSize: 12,
