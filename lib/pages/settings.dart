@@ -13,6 +13,8 @@ import 'package:perfect_flatmate/pages/view_profile.dart';
 import 'package:perfect_flatmate/pages/edit_preferences.dart';
 import 'package:perfect_flatmate/widgets/image_avatar.dart';
 
+import '../widgets/swipe_card_widget.dart';
+
 class Settings extends StatefulWidget {
   const Settings({super.key});
 
@@ -43,87 +45,96 @@ class _SettingsState extends State<Settings> {
                     final name = snapshot.data!.docs.first.get('name');
                     final age = snapshot.data!.docs.first.get('age');
                     final url = snapshot.data!.docs.first.get('image');
-                    return Column(
-                      children: [
-                        Container(
-                          padding: EdgeInsets.symmetric(
-                              horizontal: 100.0, vertical: 30.0),
-                          child: ImageAvatar(imageUri: url, radius: 80),
-                        ),
-                        Container(
-                          margin: EdgeInsets.all(10),
-                          child: Text(
-                            name,
-                            style: TextStyle(fontSize: 30.0),
-                          ),
-                        ),
-                        Container(
-                          margin: EdgeInsets.all(10),
-                          child: Text(
-                            age,
-                            style: TextStyle(fontSize: 30.0),
-                          ),
-                        ),
-                        Container(
-                          margin: EdgeInsets.all(10),
-                          child: OutlinedButton(
-                            child: Text(
-                              "View Profile",
-                              style: TextStyle(fontSize: 20.0),
+                    return CardHolder(
+                      color: Color(0xFFFFF8F9),
+                      elevation: 0,
+                      child: Center(
+                        child: Column(
+                          children: [
+                            Container(
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 100.0, vertical: 30.0),
+                              child: ImageAvatar(imageUri: url, radius: 80),
                             ),
-                            style: OutlinedButton.styleFrom(
-                                primary: CustomTheme.primaryPink,
-                                shape: RoundedRectangleBorder(
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(10)))),
-                            onPressed: () => {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => View_Profile(),
+                            Container(
+                              margin: EdgeInsets.all(10),
+                              child: Text(
+                                name,
+                                style: TextStyle(fontSize: 30.0),
+                              ),
+                            ),
+                            Container(
+                              margin: EdgeInsets.all(10),
+                              child: Text(
+                                age,
+                                style: TextStyle(fontSize: 30.0),
+                              ),
+                            ),
+                            Container(
+                              margin: EdgeInsets.all(10),
+                              child: ElevatedButton(
+                                child: Text(
+                                  "View Profile",
+                                  style: CustomTheme.h3,
+                                  // style: TextStyle(fontSize: 20.0),
                                 ),
-                              )
-                            },
-                          ),
-                        ),
-                        Container(
-                          margin: EdgeInsets.all(10),
-                          child: OutlinedButton(
-                            child: Text(
-                              "Edit Preferences",
-                              style: TextStyle(fontSize: 20.0),
+                                // style: OutlinedButton.styleFrom(
+                                //     primary: CustomTheme.primaryPink,
+                                //     shape: RoundedRectangleBorder(
+                                //         borderRadius:
+                                //             BorderRadius.all(Radius.circular(10)))),
+                                onPressed: () => {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => View_Profile(),
+                                    ),
+                                  )
+                                },
+                              ),
                             ),
-                            style: OutlinedButton.styleFrom(
-                                primary: CustomTheme.primaryPink,
-                                shape: RoundedRectangleBorder(
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(10)))),
-                            onPressed: () => {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => EditPreferences(),
+                            Container(
+                              margin: EdgeInsets.all(10),
+                              child: ElevatedButton(
+                                child: Text(
+                                  "Edit Preferences",
+                                  style: CustomTheme.h3,
+                                  // style: TextStyle(fontSize: 20.0),
                                 ),
-                              )
-                            },
-                          ),
-                        ),
-                        Container(
-                          margin: EdgeInsets.all(10),
-                          child: OutlinedButton(
-                            child: Text(
-                              "Log Out",
-                              style: TextStyle(fontSize: 20.0),
+                                // style: OutlinedButton.styleFrom(
+                                //     primary: CustomTheme.primaryPink,
+                                //     shape: RoundedRectangleBorder(
+                                //         borderRadius:
+                                //             BorderRadius.all(Radius.circular(10)))),
+                                onPressed: () => {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => EditPreferences(),
+                                    ),
+                                  )
+                                },
+                              ),
                             ),
-                            style: OutlinedButton.styleFrom(
-                                primary: CustomTheme.primaryPink,
-                                shape: RoundedRectangleBorder(
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(10)))),
-                            onPressed: () => {Auth.logout(context)},
-                          ),
-                        )
-                      ],
+                            Container(
+                              margin: EdgeInsets.all(10),
+                              child: ElevatedButton(
+                                child: Text(
+                                  "Log Out",
+                                  style: CustomTheme.h3,
+                                  // style: TextStyle(fontSize: 20.0),
+                                ),
+                                // style: OutlinedButton.styleFrom(
+                                //     primary: CustomTheme.primaryPink,
+                                //     shape: RoundedRectangleBorder(
+                                //         borderRadius:
+                                //             BorderRadius.all(Radius.circular(10)))),
+                                onPressed: () => {Auth.logout(context)},
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
                     );
                   }
                 })));

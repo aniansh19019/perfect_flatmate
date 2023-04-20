@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:perfect_flatmate/services/data.dart';
+import 'package:perfect_flatmate/widgets/forms.dart';
 
 import '../services/auth.dart';
 
@@ -95,19 +96,25 @@ class _EditPreferencesState extends State<EditPreferences> {
                       });
                     },
                   ),
-                  TextField(
-                    controller: _cityController,
-                    decoration: InputDecoration(
-                      hintText: 'City',
-                    ),
+                  EasyFormField(textEditingController:_cityController ,
+                  label: "City",
+                  ),
+                  // TextField(
+                  //   controller: _cityController,
+                  //   decoration: InputDecoration(
+                  //     hintText: 'City',
+                  //   ),
+                  // ),
+                  EasyFormField(textEditingController:_stateController ,
+                  label: "State",
                   ),
                   SizedBox(height: 18),
-                  TextField(
-                    controller: _stateController,
-                    decoration: InputDecoration(
-                      hintText: 'State',
-                    ),
-                  ),
+                  // TextField(
+                  //   controller: _stateController,
+                  //   decoration: InputDecoration(
+                  //     hintText: 'State',
+                  //   ),
+                  // ),
                   SizedBox(height: 18),
                   Text(
                     'Flatmate should already have a place:',
@@ -389,6 +396,7 @@ class _EditPreferencesState extends State<EditPreferences> {
                       ),
                     ],
                   ),
+                  SizedBox(height: 12,),
                   Center(
                       child: (ElevatedButton(
                     onPressed: () async {
