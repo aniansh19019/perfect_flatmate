@@ -21,99 +21,111 @@ class Settings extends StatefulWidget {
 }
 
 class _SettingsState extends State<Settings> {
+  dynamic data = DataHelper.getUserDataFromEmail(Auth.getCurrentUser()!);
 
-  dynamic data= DataHelper.getUserDataFromEmail(Auth.getCurrentUser()!);
-  
   @override
-
-  Widget build(BuildContext context) { 
-
-  
+  Widget build(BuildContext context) {
     return Container(
-      child:  Scaffold(
-      appBar: AppBar(
-        title: const Text("Settings"),
-      ),
-      body: FutureBuilder<QuerySnapshot<Object?>?>(
-        future: data,
-        builder: (BuildContext context, AsyncSnapshot<QuerySnapshot<Object?>?> snapshot)
-        {
-          if (snapshot.hasError) {
-              return Text('Error: ${snapshot.error}');
-            } else if (!snapshot.hasData) {
-              return Center(child: CircularProgressIndicator());
-            } else
-            {
-
-              final name= snapshot.data!.docs.first.get('name');
-              final age= snapshot.data!.docs.first.get('age');
-              final url= snapshot.data!.docs.first.get('image');
-             return Column(
-        children: [
-          Container(
-            padding: EdgeInsets.symmetric(horizontal: 100.0, vertical: 30.0),
-            child: ImageAvatar(imageUri: url, radius: 80),
-          ),
-          Container(
-            
-              margin: EdgeInsets.all(10), 
-              child: Text(name, style: TextStyle(fontSize: 30.0),),  
-          ),
-          Container(
-              margin: EdgeInsets.all(10),  
-              child: Text(age, style: TextStyle(fontSize: 30.0),),  
-          ),
-          Container(
-              margin: EdgeInsets.all(10),  
-              child: OutlinedButton( 
-                child: Text("View Profile", style: TextStyle(fontSize: 20.0),),  
-                style: OutlinedButton.styleFrom( 
-                    primary: Colors.red.shade800,
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(10)))),
-                onPressed: () => {Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => View_Profile(),
-                  ),
-                )}, 
-              ),
-          ),
-          Container(
-              margin: EdgeInsets.all(10),  
-              child: OutlinedButton( 
-                child: Text("Edit Preferences", style: TextStyle(fontSize: 20.0),),  
-                style: OutlinedButton.styleFrom( 
-                    primary: Colors.red.shade800,
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(10)))),
-                onPressed: () => {
-                  Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => EditPreferences(),
-                  ),
-                )
-                  }, 
-              ),
-          ),
-          Container(
-              margin: EdgeInsets.all(10),  
-              child: OutlinedButton( 
-                child: Text("Log Out", style: TextStyle(fontSize: 20.0),),  
-                style: OutlinedButton.styleFrom( 
-                    primary: Colors.red.shade800,
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(10)))),
-                onPressed: () => {Auth.logout(context)}, 
-              ),
-          )
-        ],
-      );
-              
-            }
-        }
-      )
-      
-    )
-
-    );
+        child: Scaffold(
+            appBar: AppBar(
+              centerTitle: true,
+              title: const Text("Settings"),
+            ),
+            body: FutureBuilder<QuerySnapshot<Object?>?>(
+                future: data,
+                builder: (BuildContext context,
+                    AsyncSnapshot<QuerySnapshot<Object?>?> snapshot) {
+                  if (snapshot.hasError) {
+                    return Text('Error: ${snapshot.error}');
+                  } else if (!snapshot.hasData) {
+                    return Center(child: CircularProgressIndicator());
+                  } else {
+                    final name = snapshot.data!.docs.first.get('name');
+                    final age = snapshot.data!.docs.first.get('age');
+                    final url = snapshot.data!.docs.first.get('image');
+                    return Column(
+                      children: [
+                        Container(
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 100.0, vertical: 30.0),
+                          child: ImageAvatar(imageUri: url, radius: 80),
+                        ),
+                        Container(
+                          margin: EdgeInsets.all(10),
+                          child: Text(
+                            name,
+                            style: TextStyle(fontSize: 30.0),
+                          ),
+                        ),
+                        Container(
+                          margin: EdgeInsets.all(10),
+                          child: Text(
+                            age,
+                            style: TextStyle(fontSize: 30.0),
+                          ),
+                        ),
+                        Container(
+                          margin: EdgeInsets.all(10),
+                          child: OutlinedButton(
+                            child: Text(
+                              "View Profile",
+                              style: TextStyle(fontSize: 20.0),
+                            ),
+                            style: OutlinedButton.styleFrom(
+                                primary: CustomTheme.primaryPink,
+                                shape: RoundedRectangleBorder(
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(10)))),
+                            onPressed: () => {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => View_Profile(),
+                                ),
+                              )
+                            },
+                          ),
+                        ),
+                        Container(
+                          margin: EdgeInsets.all(10),
+                          child: OutlinedButton(
+                            child: Text(
+                              "Edit Preferences",
+                              style: TextStyle(fontSize: 20.0),
+                            ),
+                            style: OutlinedButton.styleFrom(
+                                primary: CustomTheme.primaryPink,
+                                shape: RoundedRectangleBorder(
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(10)))),
+                            onPressed: () => {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => EditPreferences(),
+                                ),
+                              )
+                            },
+                          ),
+                        ),
+                        Container(
+                          margin: EdgeInsets.all(10),
+                          child: OutlinedButton(
+                            child: Text(
+                              "Log Out",
+                              style: TextStyle(fontSize: 20.0),
+                            ),
+                            style: OutlinedButton.styleFrom(
+                                primary: CustomTheme.primaryPink,
+                                shape: RoundedRectangleBorder(
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(10)))),
+                            onPressed: () => {Auth.logout(context)},
+                          ),
+                        )
+                      ],
+                    );
+                  }
+                })));
   }
 }
