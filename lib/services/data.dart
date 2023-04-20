@@ -113,6 +113,10 @@ class DataHelper {
         'title': userRecord.get('name'),
         'image': userRecord.get('image'),
         'email': user,
+        'dob' : userRecord.get('dob'),
+        'has_place': userRecord.get('has_place'),
+        'city' : userRecord.get('city')
+
       };
 
       userList.add(myMap);
@@ -139,13 +143,15 @@ class DataHelper {
       return;
     }
 
-    var selfDislikes = selfRecord.get('dislikes');
-    var selfMyDislikes = selfRecord.get('my_dislikes');
-    var otherDislikes = otherRecord.get('dislikes');
-    var otherMyDislikes = otherRecord.get('my_dislikes');
+    List selfDislikes = selfRecord.get('dislikes');
+    List selfMyDislikes = selfRecord.get('my_dislikes');
+    List otherDislikes = otherRecord.get('dislikes');
+    List otherMyDislikes = otherRecord.get('my_dislikes');
 
     // update my_dislikes for self
     selfMyDislikes.add(email);
+  
+    
     // update dislikes for other
     otherDislikes.add(Auth.getCurrentUser());
 
