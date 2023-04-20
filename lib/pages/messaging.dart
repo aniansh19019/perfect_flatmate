@@ -21,20 +21,24 @@ class _MessagingState extends State<Messaging> {
   final TextEditingController _textEditingController = TextEditingController();
   // widget.otherEmail
   final _firebase = FirebaseFirestore.instance;
-  late final Future<List> _chats;
+  late final Stream<QuerySnapshot<Map<String, dynamic>>> _chatStream;
 
   @override
   void initState() {
-    // Set up chat stream
-    _chats = MessageHelper.getChats(widget.otherEmail);
-
-    // _chatStream2 = _firebase
-    //     .collection('messages')
-    //     .where('FromID', isEqualTo: Auth.getCurrentUser())
-    //     .get();
-    //_chatStream = await Future.wait([_chatStream1,_chatStream2]);
     super.initState();
+
+    // Set up chat stream
+    //_chats = MessageHelper.getChats(widget.otherEmail);
+    _chatStream = _firebase
+        .collection('messages')
+        .orderBy('timestamp', descending: true)
+        .snapshots();
   }
+  // _chatStream2 = _firebase
+  //     .collection('messages')
+  //     .where('FromID', isEqualTo: Auth.getCurrentUser())
+  //     .get();
+  //_chatStream = await Future.wait([_chatStream1,_chatStream2]);
 
   @override
   Widget build(BuildContext context) {
@@ -46,9 +50,9 @@ class _MessagingState extends State<Messaging> {
       body: Column(
         children: <Widget>[
           Expanded(
-            child: FutureBuilder(
-              future: _chats,
-              builder: (context, AsyncSnapshot<List> snapshot) {
+            child: StreamBuilder(
+              stream: _chatStream,
+              builder: (context, snapshot) {
                 if (!snapshot.hasData) {
                   return Center(child: CircularProgressIndicator());
                 }
@@ -58,13 +62,21 @@ class _MessagingState extends State<Messaging> {
                   );
                 }
 
-                final chatDocs = snapshot.data!;
+                final chatDocs = snapshot.data!.docs;
                 return ListView.builder(
                   reverse: true,
                   itemCount: chatDocs.length,
                   itemBuilder: (context, index) {
                     final chatDoc = chatDocs[index].data()!;
-                    final isSelf = chatDoc['FromID'] == Auth.getCurrentUser();
+                    final isSelf = chatDoc['FromID'] == Auth.getCurrentUser() &&
+                        chatDoc['ToID'] == widget.otherEmail;
+                    final isOther = chatDoc['ToID'] == Auth.getCurrentUser() &&
+                        chatDoc['FromID'] == widget.otherEmail;
+
+                    if (!isSelf && !isOther) {
+                      return Container();
+                    }
+
                     return Align(
                       alignment:
                           isSelf ? Alignment.centerRight : Alignment.centerLeft,
@@ -89,14 +101,14 @@ class _MessagingState extends State<Messaging> {
                               ),
                             ),
                             SizedBox(height: 4),
-                            Text(
-                              DateFormat('hh:mm')
-                                  .format(chatDoc['timestamp'].toDate()),
-                              style: TextStyle(
-                                color: isSelf ? Colors.white70 : Colors.black45,
-                                fontSize: 12,
-                              ),
-                            ),
+                            // Text(
+                            //   DateFormat('hh:mm')
+                            //       .format(chatDoc['timestamp'].toDate()),
+                            //   style: TextStyle(
+                            //     color: isSelf ? Colors.white70 : Colors.black45,
+                            //     fontSize: 12,
+                            //   ),
+                            // ),
                           ],
                         ),
                       ),
