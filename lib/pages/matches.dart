@@ -7,6 +7,9 @@ import 'package:perfect_flatmate/widgets/image_avatar.dart';
 import '../services/data.dart';
 import 'package:perfect_flatmate/services/auth.dart';
 
+import '../util/timestamp_to_age.dart';
+import '../widgets/swipe_card_widget.dart';
+
 class Matches extends StatefulWidget {
   const Matches({super.key});
 
@@ -50,19 +53,41 @@ class _MatchesState extends State<Matches> {
                 ),
                 itemBuilder: (BuildContext context, int index) {
                   final item = snapshot.data[index];
-                  return ListTile(
-                    leading: ImageAvatar(imageUri: item['image']),
-                    title: Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          item['title'],
-                          style: CustomTheme.h1,
-                        ),
-                      ],
-                    ),
-                    onTap: () {
-                      Navigator.push(
+                   var currentItem = snapshot.data[index];
+                   debugPrint(currentItem.toString());
+      return Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: ListTile(
+          
+          leading: ImageAvatar(
+            imageUri: currentItem['image'],
+            radius: 22,
+          ),
+          title: Text(currentItem['title']),
+          trailing: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              TextLabelView(label: "Own Place", value: currentItem['has_place']?"Yes":"No"),
+              VerticalDivider(width: 2, thickness: 2,),
+              TextLabelView(label: "Age", value: AgeHelper.timestampToAge(currentItem['dob']),),
+
+            ],
+          ),
+          subtitle: Text(currentItem['city']),
+          shape:RoundedRectangleBorder(
+            
+              borderRadius: BorderRadius.circular(20),
+              side: BorderSide(
+                width: 2,
+                color: Colors.grey[300]!
+              )
+            ),
+          tileColor: Color(0xFFFFF8F9),
+          selectedTileColor: CustomTheme.primaryPink,
+        
+          onTap: ()
+          {
+            Navigator.push(
                         context,
                         MaterialPageRoute(
                           builder: (context) => Messaging(
@@ -71,8 +96,9 @@ class _MatchesState extends State<Matches> {
                           ),
                         ),
                       );
-                    },
-                  );
+          },
+        ),
+      );
                 },
               );
             }
