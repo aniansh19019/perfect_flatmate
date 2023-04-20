@@ -4,6 +4,7 @@ import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:perfect_flatmate/services/chats.dart';
 import 'package:perfect_flatmate/services/auth.dart';
+import 'package:perfect_flatmate/util/theme.dart';
 
 class Messaging extends StatefulWidget {
   final String otherEmail;
@@ -25,8 +26,7 @@ class _MessagingState extends State<Messaging> {
   void initState() {
     // Set up chat stream
     _chats = MessageHelper.getChats(widget.otherEmail);
-    
-    
+
     // _chatStream2 = _firebase
     //     .collection('messages')
     //     .where('FromID', isEqualTo: Auth.getCurrentUser())
@@ -36,15 +36,11 @@ class _MessagingState extends State<Messaging> {
   }
 
   @override
-  Widget build(BuildContext context) 
-  {
-    
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-
         title: Text(widget.otherName),
         centerTitle: true,
-
       ),
       body: Column(
         children: <Widget>[
@@ -53,12 +49,12 @@ class _MessagingState extends State<Messaging> {
               future: _chats,
               builder: (context, AsyncSnapshot<List> snapshot) {
                 if (!snapshot.hasData) {
-                  return Center(child: CircularProgressIndicator(
-                  ));
+                  return Center(child: CircularProgressIndicator());
                 }
-                if(snapshot.hasError)
-                {
-                  return Center(child: Text(snapshot.error.toString()),);
+                if (snapshot.hasError) {
+                  return Center(
+                    child: Text(snapshot.error.toString()),
+                  );
                 }
 
                 final chatDocs = snapshot.data!;
@@ -68,15 +64,40 @@ class _MessagingState extends State<Messaging> {
                   itemBuilder: (context, index) {
                     final chatDoc = chatDocs[index].data()!;
                     final isSelf = chatDoc['FromID'] == Auth.getCurrentUser();
-                    return ListTile(
-                      title: Text(chatDoc['content']),
-                      subtitle: Text(chatDoc['timestamp'].toString()),
-                      trailing: isSelf
-                          ? null
-                          : CircleAvatar(
-                              backgroundImage: NetworkImage(
-                                  'https://picsum.photos/64?random=$index'),
+                    return Align(
+                      alignment:
+                          isSelf ? Alignment.centerRight : Alignment.centerLeft,
+                      child: Container(
+                        margin: const EdgeInsets.symmetric(
+                            horizontal: 8, vertical: 4),
+                        padding: const EdgeInsets.all(8),
+                        decoration: BoxDecoration(
+                          color: isSelf
+                              ? CustomTheme.primaryPink
+                              : Colors.grey[300],
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              chatDoc['content'],
+                              style: TextStyle(
+                                color: isSelf ? Colors.white : Colors.black,
+                                fontWeight: FontWeight.w500,
+                              ),
                             ),
+                            SizedBox(height: 4),
+                            Text(
+                              chatDoc['timestamp'].toDate().toString(),
+                              style: TextStyle(
+                                color: isSelf ? Colors.white70 : Colors.black45,
+                                fontSize: 12,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
                     );
                   },
                 );
@@ -91,7 +112,7 @@ class _MessagingState extends State<Messaging> {
                   child: TextField(
                     controller: _textEditingController,
                     decoration: InputDecoration(
-                      hintText: 'Enter a message',
+                      hintText: 'Type your message',
                     ),
                   ),
                 ),
