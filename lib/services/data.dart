@@ -73,6 +73,7 @@ class DataHelper {
     for (var doc in docs.docs)
     {
       var reject = userMyLikes.contains(doc.get('email')) || userMyDislikes.contains(doc.get('email')) || userMatches.contains(doc.get('email'));
+      reject = (reject || (doc.get('email') == Auth.getCurrentUser()));
       if(!reject)
       {
         finalDocs.add(doc);
