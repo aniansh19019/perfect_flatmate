@@ -72,7 +72,7 @@ class DataHelper {
     List userMatches = userRecord.get('matches');
     for (var doc in docs.docs)
     {
-      var reject = (userMyLikes.contains(doc.get('email')) || userMyDislikes.contains(doc.get('email') || userMatches.contains(doc.get('email'))));
+      var reject = (userMyLikes.contains(doc.get('email')) || userMyDislikes.contains(doc.get('email') /*|| userMatches.contains(doc.get('email'))*/));
       if(!reject)
       {
         finalDocs.add(doc);
