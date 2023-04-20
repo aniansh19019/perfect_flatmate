@@ -6,6 +6,16 @@ import 'package:flutter/material.dart';
 import 'auth.dart';
 
 class MessageHelper {
+  static void printMessageList(List list)
+  {
+    for(int i=0; i<list.length; i++)
+    {
+      debugPrint("Content: ${list[i].get('content')}");
+      debugPrint("FromID: ${list[i].get('FromID')}");
+      debugPrint("ToID: ${list[i].get('ToID')}");
+      debugPrint("Timestamp: ${list[i].get('timestamp'.toString())}");
+    }
+  }
   // static Stream<QuerySnapshot<Map<String, dynamic>>> getAllMessages() {
   //   return FirebaseFirestore.instance.collection('messages').snapshots();
   // }
@@ -29,6 +39,11 @@ class MessageHelper {
     int j = 0;
     // int k = 0;
 
+    debugPrint("One");
+    MessageHelper.printMessageList(docsOne);
+    debugPrint("Two");
+    MessageHelper.printMessageList(docsTwo);
+
     List finalList = List.empty(growable: true);
 
     while(i < docsOne.length && j < docsTwo.length)
@@ -42,7 +57,7 @@ class MessageHelper {
       }
       else if(timeOne.compareTo(timeTwo)<0)
       {
-        finalList.add(docsOne[i]);
+        finalList.add(docsTwo[j]);
         j++;
       }
       else
@@ -62,6 +77,9 @@ class MessageHelper {
       finalList.add(docsTwo[j]);
       j++;
     }
+
+    debugPrint("Final");
+    MessageHelper.printMessageList(finalList);
 
     return finalList;
   }
