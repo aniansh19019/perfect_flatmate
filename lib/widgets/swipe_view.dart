@@ -143,7 +143,7 @@ class _SwipeViewState extends State<SwipeView>
                   ),
                 ),
                 Visibility(
-                  visible: !listView,
+                  visible: false,
                   child: Align(
                     alignment: Alignment.bottomCenter ,
                     // widthFactor: 0.2,

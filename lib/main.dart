@@ -37,8 +37,8 @@ class MyApp extends StatelessWidget {
           disabledColor: Colors.grey[400],
           selectedColor: CustomTheme.primaryPink,
           secondarySelectedColor: CustomTheme.primaryPink,
-          labelPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-          padding: EdgeInsets.all(4),
+          labelPadding: EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+          // padding: EdgeInsets.all(4),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(30),
             side: BorderSide(
@@ -74,6 +74,8 @@ class MyApp extends StatelessWidget {
         // inputDecorationTheme: ,
         elevatedButtonTheme: ElevatedButtonThemeData(
             style: ButtonStyle(
+              // textStyle: MaterialStateProperty.all(CustomTheme.h3),
+
           shape: MaterialStateProperty.all<RoundedRectangleBorder>(
             RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(30.0),
@@ -87,6 +89,7 @@ class MyApp extends StatelessWidget {
           labelColor: CustomTheme.primaryPink,
           unselectedLabelColor: Colors.grey,
         ),
+        
         
         // This is the theme of your application.
         //

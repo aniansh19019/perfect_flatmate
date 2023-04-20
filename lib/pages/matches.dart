@@ -46,6 +46,23 @@ class _MatchesState extends State<Matches> {
             } else if (!snapshot.hasData) {
               return Center(child: CircularProgressIndicator());
             } else {
+              if(snapshot.data.length == 0)
+              {
+                return Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Center(
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                          Icon(Icons.people,
+                          size: 80,
+                          ),
+                          Text("Go to the explore page to find more matches!", style: CustomTheme.h2,)
+                      ],
+                    ),
+                  ),
+                );
+              }
               return ListView.separated(
                 itemCount: snapshot.data.length,
                 separatorBuilder: (BuildContext context, int index) => Divider(
