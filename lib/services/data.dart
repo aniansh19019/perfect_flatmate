@@ -203,8 +203,7 @@ class DataHelper {
     var selfMyDislikes = selfRecord.get('my_dislikes');
     var otherMyDislikes = otherRecord.get('my_dislikes');
 
-    showDialog(context: context, builder: (BuildContext context) => 
-      MatchDialog(userData: otherRecord,));
+    
 
      // add to eachother's matches
     if(didMatch)
@@ -233,11 +232,14 @@ class DataHelper {
             .collection('users')
             .doc(otherDocId)
             .update({'matches': otherMatches});
+
+        showDialog(context: context, builder: (BuildContext context) => 
+      MatchDialog(userData: otherRecord,));
       } catch (error) {
         debugPrint(error.toString());
         return "Error liking";
       }
-
+      
       
     } 
     
