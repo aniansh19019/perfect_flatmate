@@ -68,7 +68,15 @@ class _MessagingState extends State<Messaging> {
                   itemCount: chatDocs.length,
                   itemBuilder: (context, index) {
                     final chatDoc = chatDocs[index].data()!;
-                    final isSelf = chatDoc['FromID'] == Auth.getCurrentUser();
+                    final isSelf = chatDoc['FromID'] == Auth.getCurrentUser() &&
+                        chatDoc['ToID'] == widget.otherEmail;
+                    final isOther = chatDoc['ToID'] == Auth.getCurrentUser() &&
+                        chatDoc['FromID'] == widget.otherEmail;
+
+                    if (!isSelf && !isOther) {
+                      return Container();
+                    }
+
                     return Align(
                       alignment:
                           isSelf ? Alignment.centerRight : Alignment.centerLeft,
@@ -93,14 +101,14 @@ class _MessagingState extends State<Messaging> {
                               ),
                             ),
                             SizedBox(height: 4),
-                            Text(
-                              DateFormat('hh:mm')
-                                  .format(chatDoc['timestamp'].toDate()),
-                              style: TextStyle(
-                                color: isSelf ? Colors.white70 : Colors.black45,
-                                fontSize: 12,
-                              ),
-                            ),
+                            // Text(
+                            //   DateFormat('hh:mm')
+                            //       .format(chatDoc['timestamp'].toDate()),
+                            //   style: TextStyle(
+                            //     color: isSelf ? Colors.white70 : Colors.black45,
+                            //     fontSize: 12,
+                            //   ),
+                            // ),
                           ],
                         ),
                       ),
