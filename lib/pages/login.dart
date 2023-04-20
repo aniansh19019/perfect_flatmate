@@ -68,15 +68,17 @@ class _LoginState extends State<Login>
       ),
   
       body: SafeArea(
-        child: SingleChildScrollView(
-          child: Center(
+        child: Center(
+          child: SingleChildScrollView(
             child: Container(
+              width: MediaQuery.of(context).size.width,
+              height: MediaQuery.of(context).size.height,
               padding: EdgeInsets.all(16),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-        
+                  
                   Spacer(flex: 2),
                   // Text("We Event Check In Admin"),
                   Expanded(
